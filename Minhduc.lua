@@ -1,8 +1,9 @@
--- [[ MINHDUC HUD - PREMIUM RGB WIDGETS - FULL FINAL EDITION 2026 ]] --
+-- [[ MINHDUC HUB - PREMIUM RGB WIDGETS - FULL FINAL EDITION 2026 ]] --
 local UserInputService = game:GetService("UserInputService")
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local Workspace = game:GetService("Workspace")
+local TweenService = game:GetService("TweenService")
 local LocalPlayer = Players.LocalPlayer
 
 -- Bảng quản lý tất cả các UIStroke để đồng bộ màu RGB
@@ -25,6 +26,54 @@ task.spawn(function()
         end
     end
 end)
+
+-- ==========================================
+-- ĐỊNH NGHĨA HÀM TẠO THÔNG BÁO (NOTIFY)
+-- ==========================================
+local NotifyGui = Instance.new("ScreenGui")
+NotifyGui.Name = "HubNotificationSystem"
+NotifyGui.ResetOnSpawn = false
+NotifyGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
+
+local function createNotification(text)
+    local notifyFrame = Instance.new("Frame")
+    notifyFrame.Size = UDim2.new(0, 220, 0, 45)
+    notifyFrame.Position = UDim2.new(1, 30, 0, 20) -- Bắt đầu ẩn ngoài màn hình bên phải
+    notifyFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
+    notifyFrame.BorderSizePixel = 0
+    Instance.new("UICorner", notifyFrame).CornerRadius = UDim.new(0, 8)
+    
+    local notifyStroke = Instance.new("UIStroke", notifyFrame)
+    notifyStroke.Thickness = 1.5
+    registerStroke(notifyStroke) -- Chạy hiệu ứng màu RGB cho thông báo
+    
+    local notifyText = Instance.new("TextLabel", notifyFrame)
+    notifyText.Size = UDim2.new(1, 0, 1, 0)
+    notifyText.BackgroundTransparency = 1
+    notifyText.Font = Enum.Font.GothamBold
+    notifyText.TextSize = 12
+    notifyText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    notifyText.Text = text
+    
+    notifyFrame.Parent = NotifyGui
+    
+    -- Hiệu ứng trượt vào (Slide In)
+    local tweenIn = TweenService:Create(notifyFrame, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+        Position = UDim2.new(1, -240, 0, 20)
+    })
+    tweenIn:Play()
+    
+    -- Biến mất sau 3.5 giây
+    task.delay(3.5, function()
+        local tweenOut = TweenService:Create(notifyFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+            Position = UDim2.new(1, 30, 0, 20)
+        })
+        tweenOut:Play()
+        tweenOut.Completed:Connect(function()
+            notifyFrame:Destroy()
+        end)
+    end)
+end
 
 -- ==========================================
 -- 1. PANEL ĐĂNG NHẬP & CHỌN THIẾT BỊ
@@ -51,7 +100,7 @@ PassTitle.BackgroundTransparency = 1
 PassTitle.Font = Enum.Font.GothamBold
 PassTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
 PassTitle.TextSize = 13
-PassTitle.Text = "HỆ THỐNG BẢO MẬT HUD"
+PassTitle.Text = "HỆ THỐNG BẢO MẬT HUB"
 
 local PassInput = Instance.new("TextBox", PassFrame)
 PassInput.Size = UDim2.new(0.9, 0, 0, 35)
@@ -60,7 +109,7 @@ PassInput.BackgroundColor3 = Color3.fromRGB(35, 35, 40)
 PassInput.TextColor3 = Color3.fromRGB(255, 255, 255)
 PassInput.Font = Enum.Font.Gotham
 PassInput.TextSize = 13
-PassInput.PlaceholderText = "Nhập mật khẩu..."
+PassInput.PlaceholderText = "Nhập mật khẩu mới..."
 PassInput.Text = ""
 Instance.new("UICorner", PassInput).CornerRadius = UDim.new(0, 6)
 
@@ -118,14 +167,14 @@ Instance.new("UICorner", MobileBtn).CornerRadius = UDim.new(0, 6)
 -- 2. THIẾT KẾ MAIN GUI - BANNER & SIDEBAR
 -- ==========================================
 local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "ModernDashboardHUD"
+ScreenGui.Name = "ModernDashboardHUB"
 ScreenGui.ResetOnSpawn = false
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 ScreenGui.Enabled = false
 ScreenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 
 local ToggleButton = Instance.new("TextButton")
-ToggleButton.Name = "HUDToggle"
+ToggleButton.Name = "HUBToggle"
 ToggleButton.Size = UDim2.new(0, 50, 0, 50)
 ToggleButton.Position = UDim2.new(0, 15, 0, 15)
 ToggleButton.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
@@ -133,7 +182,7 @@ ToggleButton.BackgroundTransparency = 0.2
 ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 ToggleButton.Font = Enum.Font.GothamBold
 ToggleButton.TextSize = 12
-ToggleButton.Text = "HUD"
+ToggleButton.Text = "HUB"
 local UICornerToggle = Instance.new("UICorner", ToggleButton)
 UICornerToggle.CornerRadius = UDim.new(0, 25)
 Instance.new("UIStroke", ToggleButton).Color = Color3.fromRGB(80, 80, 90)
@@ -172,7 +221,7 @@ BrandLabel.BackgroundTransparency = 1
 BrandLabel.Font = Enum.Font.GothamBold
 BrandLabel.TextColor3 = Color3.fromRGB(0, 255, 150)
 BrandLabel.TextSize = 13
-BrandLabel.Text = "MINHDUC HUD"
+BrandLabel.Text = "MINHDUC HUB"
 
 local SubBrand = Instance.new("TextLabel", SideBar)
 SubBrand.Size = UDim2.new(1, 0, 0, 15)
@@ -181,7 +230,7 @@ SubBrand.BackgroundTransparency = 1
 SubBrand.Font = Enum.Font.Gotham
 SubBrand.TextColor3 = Color3.fromRGB(120, 120, 130)
 SubBrand.TextSize = 9
-SubBrand.Text = "v1.9 • Final Mobile Fix"
+SubBrand.Text = "v2.0 • Premium Edition"
 
 local TabContainer = Instance.new("Frame", SideBar)
 TabContainer.Size = UDim2.new(1, -10, 1, -60)
@@ -422,7 +471,7 @@ TeleportBackBtn.MouseButton1Click:Connect(function()
     end
 end)
 
--- --- [3. CỤM XUẤT HỒN VIP - ĐÃ FIX BAY LÊN XUỐNG THEO CAMERA] ---
+-- --- [3. CỤM XUẤT HỒN PHIÊN BẢN MOBILE FIX BAY LÊN XUỐNG] ---
 local FreecamSpeedVal = 50
 local isFreecam = false
 
@@ -474,7 +523,6 @@ Instance.new("UICorner", FreecamToggleInd).CornerRadius = UDim.new(0, 8)
 
 local autoStandEnabled, noclipEnabled, floatEnabled, respawnEnabled, espEnabled, playerEspEnabled = false, false, false, false, false, false
 
--- Khai báo hàm trước khi gán sự kiện click
 local triggerOldFreecam
 
 FreecamToggleBtn.MouseButton1Click:Connect(function()
@@ -502,12 +550,13 @@ local EspPlayerToggle = createFeatureToggle(Container2, "Bật Định Vị Ngư
 -- 4. LOGIC ĐĂNG NHẬP CHỌN THIẾT BỊ & ẨN/HIỆN
 -- ==========================================
 SubmitBtn.MouseButton1Click:Connect(function()
-    if PassInput.Text == "minh565duc" then
+    -- ĐỔI MẬT KHẨU THÀNH: MINHDUC HUB
+    if PassInput.Text == "MINHDUC HUB" then
         PassFrame.Visible = false
         DeviceFrame.Visible = true
     else
         PassInput.Text = ""
-        PassInput.PlaceholderText = "Sai mã đăng nhập!"
+        PassInput.PlaceholderText = "Mật khẩu sai!"
     end
 end)
 
@@ -517,6 +566,9 @@ local function initDashboard(w, h)
     MainFrame.Position = UDim2.new(0.5, -w/2, 0.5, -h/2)
     ScreenGui.Enabled = true
     MainFrame.Visible = true
+    
+    -- THÊM THÔNG BÁO KHI BẬT HUB THÀNH CÔNG
+    createNotification("MINHDUC HUB ĐÃ BẬT")
 end
 
 PcBtn.MouseButton1Click:Connect(function() initDashboard(440, 260) end)
@@ -529,7 +581,7 @@ ToggleButton.MouseButton1Click:Connect(function()
 end)
 
 -- ==========================================
--- 5. HỆ THỐNG XỬ LÝ CORE XUẤT HỒN 3D SIÊU MƯỢT
+-- 5. HỆ THỐNG XỬ LÝ CORE XUẤT HỒN 3D
 -- ==========================================
 local freecamPart = nil
 local freecamCFrame = CFrame.new()
@@ -553,7 +605,7 @@ function triggerOldFreecam(state)
         freecamPart.CFrame = freecamCFrame
         Workspace.CurrentCamera.CameraSubject = freecamPart
         
-        hum.PlatformStand = true -- Vô hiệu hóa lực di chuyển của Xác gốc
+        hum.PlatformStand = true
         
         table.clear(anchoredParts)
         for _, p in pairs(char:GetDescendants()) do
@@ -581,18 +633,17 @@ RunService.RenderStepped:Connect(function()
     local char = LocalPlayer.Character
     local hum = char and char:FindFirstChildOfClass("Humanoid")
     
-    if not isFreecam and hum and speedActive then
+    if not isFreecam perks and hum and speedActive then
         hum.WalkSpeed = SpeedVal
-    elseif not speedActive and hum then
+     perkelseif not speedActive and hum then
         hum.WalkSpeed = 16
     end
     
-    -- THUẬT TOÁN FREECAM TỰ DO: HỒN DI CHUYỂN 3D THEO HƯỚNG NHÌN MÀN HÌNH (PC & MOBILE)
+    -- XỬ LÝ FREECAM DI CHUYỂN THEO CAMERA (Xoay hướng nào đi hướng đó)
     if isFreecam and freecamPart then
         local camCFrame = Workspace.CurrentCamera.CFrame
         local moveVector = Vector3.new(0, 0, 0)
         
-        -- Hỗ trợ phím bấm PC
         if UserInputService:IsKeyDown(Enum.KeyCode.W) then moveVector = moveVector + camCFrame.LookVector end
         if UserInputService:IsKeyDown(Enum.KeyCode.S) then moveVector = moveVector - camCFrame.LookVector end
         if UserInputService:IsKeyDown(Enum.KeyCode.D) then moveVector = moveVector + camCFrame.RightVector end
@@ -600,7 +651,7 @@ RunService.RenderStepped:Connect(function()
         if UserInputService:IsKeyDown(Enum.KeyCode.Space) then moveVector = moveVector + Vector3.new(0, 1, 0) end
         if UserInputService:IsKeyDown(Enum.KeyCode.LeftShift) then moveVector = moveVector - Vector3.new(0, 1, 0) end
         
-        -- SỬA LỖI MOBILE LÊN XUỐNG: Đồng bộ JoyStick theo hướng LookVector 3D của Màn Hình xoay
+        -- Hỗ trợ Mobile JoyStick kéo tiến lùi tự động bay lên/hạ xuống theo góc ngẩng màn hình
         if hum and hum.MoveDirection.Magnitude > 0 and moveVector.Magnitude == 0 then
             local joyDir = hum.MoveDirection
             local forwardVector = camCFrame.LookVector
