@@ -1,4 +1,4 @@
--- [[ MINHDUC HUB - PREMIUM RGB WIDGETS - FULL FINAL EDITION 2026 ]] --
+-- [[ MINHDUC HUB - PREMIUM RGB WIDGETS - FULL FINAL CLEAN EDITION 2026 ]] --
 local UserInputService = game:GetService("UserInputService")
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
@@ -550,7 +550,6 @@ local EspPlayerToggle = createFeatureToggle(Container2, "Bật Định Vị Ngư
 -- 4. LOGIC ĐĂNG NHẬP CHỌN THIẾT BỊ & ẨN/HIỆN
 -- ==========================================
 SubmitBtn.MouseButton1Click:Connect(function()
-    -- ĐỔI MẬT KHẨU THÀNH: MINHDUC HUB
     if PassInput.Text == "MINHDUC HUB" then
         PassFrame.Visible = false
         DeviceFrame.Visible = true
@@ -567,7 +566,7 @@ local function initDashboard(w, h)
     ScreenGui.Enabled = true
     MainFrame.Visible = true
     
-    -- THÊM THÔNG BÁO KHI BẬT HUB THÀNH CÔNG
+    -- THÔNG BÁO KHI BẬT HUB THÀNH CÔNG
     createNotification("MINHDUC HUB ĐÃ BẬT")
 end
 
@@ -633,9 +632,9 @@ RunService.RenderStepped:Connect(function()
     local char = LocalPlayer.Character
     local hum = char and char:FindFirstChildOfClass("Humanoid")
     
-    if not isFreecam perks and hum and speedActive then
+    if not isFreecam and hum and speedActive then
         hum.WalkSpeed = SpeedVal
-     perkelseif not speedActive and hum then
+    elseif not speedActive and hum then
         hum.WalkSpeed = 16
     end
     
