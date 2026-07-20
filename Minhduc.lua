@@ -1,4 +1,4 @@
--- [[ MINHDUC HUB - DARK EDITION WITH CUSTOM DECAL ASSETS ]] --
+-- [[ MINHDUC HUB - FIXED FLOAT ON DEATH & ADDED SPEED SETTING ]] --
 local UserInputService = game:GetService("UserInputService")
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
@@ -39,7 +39,7 @@ local function createNotification(text)
     local notifyFrame = Instance.new("Frame")
     notifyFrame.Size = UDim2.new(0, 220, 0, 45)
     notifyFrame.Position = UDim2.new(1, 30, 0, 20)
-    notifyFrame.BackgroundColor3 = Color3.fromRGB(10, 10, 14) -- Tối hơn
+    notifyFrame.BackgroundColor3 = Color3.fromRGB(10, 10, 14)
     notifyFrame.BorderSizePixel = 0
     Instance.new("UICorner", notifyFrame).CornerRadius = UDim.new(0, 8)
     
@@ -84,7 +84,7 @@ PassGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 local PassFrame = Instance.new("Frame")
 PassFrame.Size = UDim2.new(0, 260, 0, 140)
 PassFrame.Position = UDim2.new(0.5, -130, 0.5, -70)
-PassFrame.BackgroundColor3 = Color3.fromRGB(12, 12, 16) -- Tông tối hơn
+PassFrame.BackgroundColor3 = Color3.fromRGB(12, 12, 16)
 PassFrame.BorderSizePixel = 0
 Instance.new("UICorner", PassFrame).CornerRadius = UDim.new(0, 10)
 local PassStroke = Instance.new("UIStroke", PassFrame)
@@ -180,7 +180,7 @@ ToggleButton.BackgroundColor3 = Color3.fromRGB(10, 10, 12)
 ToggleButton.BackgroundTransparency = 0.1
 ToggleButton.Image = "rbxassetid://872392514"
 local UICornerToggle = Instance.new("UICorner", ToggleButton)
-UICornerToggle.CornerRadius = UDim.new(1, 0) -- Tròn xoe
+UICornerToggle.CornerRadius = UDim.new(1, 0)
 local ToggleStroke = Instance.new("UIStroke", ToggleButton)
 ToggleStroke.Thickness = 2
 registerStroke(ToggleStroke)
@@ -189,7 +189,7 @@ ToggleButton.Parent = ScreenGui
 -- KHUNG CHÍNH GIAO DIỆN TỐI (DARK THEME)
 local MainFrame = Instance.new("Frame")
 MainFrame.Name = "MainFrame"
-MainFrame.BackgroundColor3 = Color3.fromRGB(10, 10, 14) -- Màu tối mờ
+MainFrame.BackgroundColor3 = Color3.fromRGB(10, 10, 14)
 MainFrame.BorderSizePixel = 0
 MainFrame.Active = true
 MainFrame.Visible = false
@@ -207,7 +207,7 @@ MainBackgroundImage.Name = "BackgroundImage"
 MainBackgroundImage.Size = UDim2.new(1, 0, 1, 0)
 MainBackgroundImage.Position = UDim2.new(0, 0, 0, 0)
 MainBackgroundImage.Image = "rbxassetid://13314371732"
-MainBackgroundImage.ImageTransparency = 0.75 -- Phủ tối mờ hình nền để chữ hiển thị rõ ràng
+MainBackgroundImage.ImageTransparency = 0.75
 MainBackgroundImage.ScaleType = Enum.ScaleType.Crop
 MainBackgroundImage.BackgroundTransparency = 1
 MainBackgroundImage.ZIndex = 0
@@ -246,7 +246,7 @@ SubBrand.BackgroundTransparency = 1
 SubBrand.Font = Enum.Font.Gotham
 SubBrand.TextColor3 = Color3.fromRGB(120, 120, 130)
 SubBrand.TextSize = 8
-SubBrand.Text = "v2.5 • Dark Decal"
+SubBrand.Text = "v2.6 • Fixed Float"
 SubBrand.ZIndex = 3
 
 -- STATS SERVER (FPS & PLAYER)
@@ -313,14 +313,14 @@ ContentArea.ZIndex = 2
 local Container1 = Instance.new("ScrollingFrame", ContentArea)
 Container1.Size = UDim2.new(1, 0, 1, 0)
 Container1.BackgroundTransparency = 1
-Container1.CanvasSize = UDim2.new(0, 0, 0, 420)
+Container1.CanvasSize = UDim2.new(0, 0, 0, 480)
 Container1.ScrollBarThickness = 2
 Container1.ScrollBarImageColor3 = Color3.fromRGB(60, 60, 70)
 
 local Container2 = Instance.new("ScrollingFrame", ContentArea)
 Container2.Size = UDim2.new(1, 0, 1, 0)
 Container2.BackgroundTransparency = 1
-Container2.CanvasSize = UDim2.new(0, 0, 0, 420)
+Container2.CanvasSize = UDim2.new(0, 0, 0, 480)
 Container2.ScrollBarThickness = 2
 Container2.Visible = false
 
@@ -667,8 +667,9 @@ FreecamToggleBtn.MouseButton1Click:Connect(function()
     triggerOldFreecam(isFreecam)
 end)
 
--- --- [4. BAY FLOAT FLOOR] ---
+-- --- [4. BAY FLOAT FLOOR + TỐC ĐỘ BAY (FLOAT SPEED)] ---
 local currentFloatHeight = 0
+local floatMoveSpeed = 0.8 -- Mặc định tốc độ bay
 local isHoldingUp = false
 local isHoldingDown = false
 
@@ -682,14 +683,31 @@ FloatGroupStroke.Thickness = 1.2
 registerStroke(FloatGroupStroke)
 
 local FloatGroupLabel = Instance.new("TextLabel", FloatGroupFrame)
-FloatGroupLabel.Size = UDim2.new(0.6, 0, 1, 0)
+FloatGroupLabel.Size = UDim2.new(0.35, 0, 1, 0)
 FloatGroupLabel.Position = UDim2.new(0, 10, 0, 0)
 FloatGroupLabel.BackgroundTransparency = 1
 FloatGroupLabel.Font = Enum.Font.GothamMedium
 FloatGroupLabel.TextSize = 11
 FloatGroupLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-FloatGroupLabel.Text = "Kích Hoạt Chế Độ Bay"
+FloatGroupLabel.Text = "Chế Độ Bay (Float)"
 FloatGroupLabel.TextXAlignment = Enum.TextXAlignment.Left
+
+-- Ô chỉnh Tốc độ bay (Float Speed) ngay trong giao diện
+local FloatSpeedInput = Instance.new("TextBox", FloatGroupFrame)
+FloatSpeedInput.Size = UDim2.new(0, 50, 0, 22)
+FloatSpeedInput.Position = UDim2.new(0.42, 0, 0.5, -11)
+FloatSpeedInput.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
+FloatSpeedInput.TextColor3 = Color3.fromRGB(0, 255, 150)
+FloatSpeedInput.Font = Enum.Font.GothamBold
+FloatSpeedInput.TextSize = 11
+FloatSpeedInput.Text = "0.8"
+FloatSpeedInput.PlaceholderText = "Tốc độ"
+Instance.new("UICorner", FloatSpeedInput).CornerRadius = UDim.new(0, 4)
+
+FloatSpeedInput.FocusLost:Connect(function()
+    local num = tonumber(FloatSpeedInput.Text)
+    if num then floatMoveSpeed = num end
+end)
 
 local FloatToggleBtn = Instance.new("TextButton", FloatGroupFrame)
 FloatToggleBtn.Size = UDim2.new(0, 42, 0, 22)
@@ -728,13 +746,13 @@ task.spawn(function()
         task.wait(0.03)
         if floatEnabled then
             if isHoldingUp then
-                currentFloatHeight = currentFloatHeight + 0.8
+                currentFloatHeight = currentFloatHeight + floatMoveSpeed
                 local char = LocalPlayer.Character
                 if char and char:FindFirstChild("HumanoidRootPart") then
-                    char.HumanoidRootPart.CFrame = char.HumanoidRootPart.CFrame + Vector3.new(0, 0.8, 0)
+                    char.HumanoidRootPart.CFrame = char.HumanoidRootPart.CFrame + Vector3.new(0, floatMoveSpeed, 0)
                 end
             elseif isHoldingDown then
-                currentFloatHeight = currentFloatHeight - 0.8
+                currentFloatHeight = currentFloatHeight - floatMoveSpeed
             end
         end
     end
@@ -802,7 +820,7 @@ local function initDashboard(w, h)
     MainFrame.Position = UDim2.new(0.5, -w/2, 0.5, -h/2)
     ScreenGui.Enabled = true
     MainFrame.Visible = true
-    createNotification("MINHDUC HUB ĐÃ BẬT (v2.5)")
+    createNotification("MINHDUC HUB ĐÃ BẬT (v2.6)")
 end
 
 PcBtn.MouseButton1Click:Connect(function() initDashboard(440, 260) end)
@@ -921,10 +939,23 @@ RunService.Stepped:Connect(function()
     end
 end)
 
+-- --- KHẮC PHỤC LỖI FLOAT SAU KHI CHẾT/HỒI SINH ---
 local floatPart = nil
 RunService.Heartbeat:Connect(function()
-    if floatEnabled and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and not isFreecam then
-        local hrp = LocalPlayer.Character.HumanoidRootPart
+    local char = LocalPlayer.Character
+    local hrp = char and char:FindFirstChild("HumanoidRootPart")
+    local hum = char and char:FindFirstChildOfClass("Humanoid")
+
+    -- Nếu nhân vật chết hoặc mất HumanoidRootPart thì tự động xóa nền tảng cũ để làm mới khi hồi sinh
+    if not hrp or (hum and hum.Health <= 0) then
+        if floatPart then 
+            floatPart:Destroy() 
+            floatPart = nil 
+        end
+        return
+    end
+
+    if floatEnabled and not isFreecam then
         if not floatPart or not floatPart.Parent then  
             floatPart = Instance.new("Part")  
             floatPart.Size = Vector3.new(5, 0.5, 5)  
@@ -932,11 +963,16 @@ RunService.Heartbeat:Connect(function()
             floatPart.Anchored = true
             floatPart.CanCollide = true
             floatPart.Parent = workspace
+            -- Cập nhật lại độ cao dựa theo vị trí hiện tại sau khi hồi sinh
+            currentFloatHeight = hrp.Position.Y - 3.4
         end  
         
         floatPart.CFrame = CFrame.new(hrp.Position.X, currentFloatHeight, hrp.Position.Z)  
     else  
-        if floatPart then floatPart:Destroy() floatPart = nil end
+        if floatPart then 
+            floatPart:Destroy() 
+            floatPart = nil 
+        end
     end
 end)
 
@@ -944,7 +980,11 @@ local lastDeathPos = nil
 local function listenDeath(char)
     local hum = char:WaitForChild("Humanoid", 5)
     if hum then
-        hum.Died:Connect(function() if respawnEnabled and char:FindFirstChild("HumanoidRootPart") then lastDeathPos = char.HumanoidRootPart.CFrame end end)
+        hum.Died:Connect(function() 
+            if respawnEnabled and char:FindFirstChild("HumanoidRootPart") then 
+                lastDeathPos = char.HumanoidRootPart.CFrame 
+            end 
+        end)
     end
 end
 if LocalPlayer.Character then listenDeath(LocalPlayer.Character) end
