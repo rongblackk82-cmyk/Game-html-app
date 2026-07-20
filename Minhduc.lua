@@ -1,4 +1,4 @@
--- [[ MINHDUC HUB - PREMIUM RGB WIDGETS - FIX FLOAT EDITION 2026 ]] --
+-- [[ MINHDUC HUB - PREMIUM RGB WIDGETS - FULL ULTIMATE EDITION 2026 ]] --
 local UserInputService = game:GetService("UserInputService")
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
@@ -74,7 +74,7 @@ local function createNotification(text)
 end
 
 -- ==========================================
--- 1. PANEL ĐĂNG NHẬP & CHỌN THIẾT BỊ
+-- 1. PANEL ĐĂNG NHẬP & CHỌN THIẾT BỊ (PASS: MINHDUCHUB)
 -- ==========================================
 local PassGui = Instance.new("ScreenGui")
 PassGui.Name = "AdminLoginGUI"
@@ -107,7 +107,7 @@ PassInput.BackgroundColor3 = Color3.fromRGB(35, 35, 40)
 PassInput.TextColor3 = Color3.fromRGB(255, 255, 255)
 PassInput.Font = Enum.Font.Gotham
 PassInput.TextSize = 13
-PassInput.PlaceholderText = "Nhập mật khẩu mới..."
+PassInput.PlaceholderText = "Nhập mật khẩu..."
 PassInput.Text = ""
 Instance.new("UICorner", PassInput).CornerRadius = UDim.new(0, 6)
 
@@ -228,7 +228,7 @@ SubBrand.BackgroundTransparency = 1
 SubBrand.Font = Enum.Font.Gotham
 SubBrand.TextColor3 = Color3.fromRGB(120, 120, 130)
 SubBrand.TextSize = 8
-SubBrand.Text = "v2.2 • Fixed Float"
+SubBrand.Text = "v2.5 • Final Ultimate"
 
 -- KHU VỰC HIỂN THỊ THÔNG TIN SERVER (FPS & PLAYER COUNT) TRÊN SIDEBAR
 local InfoStatsFrame = Instance.new("Frame", SideBar)
@@ -387,7 +387,7 @@ local function createFeatureToggle(parent, text, defaultCallback)
 end
 
 -- ==========================================
--- 3. THIẾT LẬP CÁC Ô CHỨC NĂNG VÀ MINI WIDGET
+-- 3. THIẾT LẬP CÁC Ô CHỨC NĂNG VÀ WIDGET FLOAT
 -- ==========================================
 
 -- TẠO GUI ĐIỀU KHIỂN FLOAT LÊN XUỐNG BÊN NGOÀI ĐỘC LẬP
@@ -399,7 +399,7 @@ FloatExternalGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 
 local ExtFrame = Instance.new("Frame", FloatExternalGui)
 ExtFrame.Size = UDim2.new(0, 45, 0, 90)
-ExtFrame.Position = UDim2.new(0.85, 0, 0.6, 0) -- Vị trí mặc định bên phải màn hình
+ExtFrame.Position = UDim2.new(0.85, 0, 0.6, 0)
 ExtFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
 ExtFrame.BackgroundTransparency = 0.2
 Instance.new("UICorner", ExtFrame).CornerRadius = UDim.new(0, 8)
@@ -642,8 +642,10 @@ FreecamToggleBtn.MouseButton1Click:Connect(function()
     triggerOldFreecam(isFreecam)
 end)
 
--- --- [4. CỤM CHẾ ĐỘ BAY (FLOAT FLOOR) - ĐÃ FIX KHÔNG TỰ BAY] ---
-local currentFloatHeight = 0 -- Lưu vị trí Y cố định khi đứng im
+-- --- [4. CỤM CHẾ ĐỘ BAY (FLOAT FLOOR)] ---
+local currentFloatHeight = 0
+local isHoldingUp = false
+local isHoldingDown = false
 
 local FloatGroupFrame = Instance.new("Frame", Container1)
 FloatGroupFrame.Size = UDim2.new(1, -5, 0, 40)
@@ -682,35 +684,70 @@ FloatToggleBtn.MouseButton1Click:Connect(function()
         FloatToggleBtn.BackgroundColor3 = Color3.fromRGB(0, 210, 120)
         FloatToggleInd:TweenPosition(UDim2.new(1, -19, 0.5, -8), "Out", "Quad", 0.15, true)
         
-        -- Khi vừa bật: Khóa luôn độ cao sàn ở đúng vị trí chân nhân vật hiện tại để tránh bị bay lên tự động
         local char = LocalPlayer.Character
         local hrp = char and char:FindFirstChild("HumanoidRootPart")
         if hrp then
             currentFloatHeight = hrp.Position.Y - 3.4
         end
-        FloatExternalGui.Enabled = true -- Hiện bảng nút bên ngoài
+        FloatExternalGui.Enabled = true
     else
         FloatToggleBtn.BackgroundColor3 = Color3.fromRGB(55, 55, 60)
         FloatToggleInd:TweenPosition(UDim2.new(0, 3, 0.5, -8), "Out", "Quad", 0.15, true)
-        FloatExternalGui.Enabled = false -- Ẩn bảng nút bên ngoài
+        FloatExternalGui.Enabled = false
     end
 end)
 
--- LOGIC NHẢY LÊN/XUỐNG CỦA CÁC NÚT NGOÀI (BẤM LÀ NHẢY LÊN/XUỐNG 1 BẬC)
-ExtUpBtn.MouseButton1Click:Connect(function()
-    if floatEnabled then
-        currentFloatHeight = currentFloatHeight + 3 -- Nhảy lên 1 bậc
-        -- Đồng thời đẩy nhẹ nhân vật lên để đứng trên sàn mới ngay lập tức
-        local char = LocalPlayer.Character
-        if char and char:FindFirstChild("HumanoidRootPart") then
-            char.HumanoidRootPart.CFrame = char.HumanoidRootPart.CFrame + Vector3.new(0, 3, 0)
+-- LOGIC GIỮ NÚT ĐỂ BAY LÊN / HẠ XUỐNG LIÊN TỤC
+task.spawn(function()
+    while true do
+        task.wait(0.03)
+        if floatEnabled then
+            if isHoldingUp then
+                currentFloatHeight = currentFloatHeight + 0.8
+                local char = LocalPlayer.Character
+                if char and char:FindFirstChild("HumanoidRootPart") then
+                    char.HumanoidRootPart.CFrame = char.HumanoidRootPart.CFrame + Vector3.new(0, 0.8, 0)
+                end
+            elseif isHoldingDown then
+                currentFloatHeight = currentFloatHeight - 0.8
+            end
         end
     end
 end)
 
-ExtDownBtn.MouseButton1Click:Connect(function()
-    if floatEnabled then
-        currentFloatHeight = currentFloatHeight - 3 -- Hạ xuống 1 bậc
+ExtUpBtn.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        isHoldingUp = true
+    end
+end)
+
+ExtUpBtn.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        isHoldingUp = false
+    end
+end)
+
+ExtDownBtn.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        isHoldingDown = true
+    end
+end)
+
+ExtDownBtn.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        isHoldingDown = false
+    end
+end)
+
+-- BẮT SỰ KIỆN NÚT SPACE ĐỂ SÀN FLOAT TỰ ĐỘNG ĐẨY LÊN (KHÔNG BỊ TỤT)
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+    if gameProcessed then return end
+    if input.KeyCode == Enum.KeyCode.Space and floatEnabled then
+        local char = LocalPlayer.Character
+        local hum = char and char:FindFirstChildOfClass("Humanoid")
+        if hum then
+            currentFloatHeight = currentFloatHeight + hum.JumpPower * 0.15
+        end
     end
 end)
 
@@ -724,9 +761,10 @@ local EspPlayerToggle = createFeatureToggle(Container2, "Bật Định Vị Ngư
 
 -- ==========================================
 -- 4. LOGIC ĐĂNG NHẬP CHỌN THIẾT BỊ & ẨN/HIỆN
+-- MẬT KHẨU MỚI: MINHDUCHUB
 -- ==========================================
 SubmitBtn.MouseButton1Click:Connect(function()
-    if PassInput.Text == "MINHDUC HUB" then
+    if PassInput.Text == "MINHDUCHUB" then
         PassFrame.Visible = false
         DeviceFrame.Visible = true
     else
@@ -741,7 +779,7 @@ local function initDashboard(w, h)
     MainFrame.Position = UDim2.new(0.5, -w/2, 0.5, -h/2)
     ScreenGui.Enabled = true
     MainFrame.Visible = true
-    createNotification("MINHDUC HUB ĐÃ BẬT (v2.2)")
+    createNotification("MINHDUC HUB ĐÃ BẬT (v2.5)")
 end
 
 PcBtn.MouseButton1Click:Connect(function() initDashboard(440, 260) end)
@@ -860,7 +898,7 @@ RunService.Stepped:Connect(function()
     end
 end)
 
--- ENGINE VÒNG LẶP SÀN FLOAT ĐỨNG IM CỐ ĐỊNH & THAY ĐỔI THEO BẬC NHẢY
+-- ENGINE VÒNG LẶP SÀN FLOAT ĐỨNG IM CỐ ĐỊNH
 local floatPart = nil
 RunService.Heartbeat:Connect(function()
     if floatEnabled and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and not isFreecam then
@@ -874,7 +912,6 @@ RunService.Heartbeat:Connect(function()
             floatPart.Parent = workspace
         end  
         
-        -- Nếu người chơi di chuyển đi chỗ khác, sàn sẽ di chuyển theo trục X, Z nhưng trục Y (độ cao) luôn giữ nguyên cố định!
         floatPart.CFrame = CFrame.new(hrp.Position.X, currentFloatHeight, hrp.Position.Z)  
     else  
         if floatPart then floatPart:Destroy() floatPart = nil end
