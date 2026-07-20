@@ -38,14 +38,14 @@ NotifyGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 local function createNotification(text)
     local notifyFrame = Instance.new("Frame")
     notifyFrame.Size = UDim2.new(0, 220, 0, 45)
-    notifyFrame.Position = UDim2.new(1, 30, 0, 20) -- Bắt đầu ẩn ngoài màn hình bên phải
+    notifyFrame.Position = UDim2.new(1, 30, 0, 20)
     notifyFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
     notifyFrame.BorderSizePixel = 0
     Instance.new("UICorner", notifyFrame).CornerRadius = UDim.new(0, 8)
     
     local notifyStroke = Instance.new("UIStroke", notifyFrame)
     notifyStroke.Thickness = 1.5
-    registerStroke(notifyStroke) -- Chạy hiệu ứng màu RGB cho thông báo
+    registerStroke(notifyStroke)
     
     local notifyText = Instance.new("TextLabel", notifyFrame)
     notifyText.Size = UDim2.new(1, 0, 1, 0)
@@ -57,13 +57,11 @@ local function createNotification(text)
     
     notifyFrame.Parent = NotifyGui
     
-    -- Hiệu ứng trượt vào (Slide In)
     local tweenIn = TweenService:Create(notifyFrame, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
         Position = UDim2.new(1, -240, 0, 20)
     })
     tweenIn:Play()
     
-    -- Biến mất sau 3.5 giây
     task.delay(3.5, function()
         local tweenOut = TweenService:Create(notifyFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
             Position = UDim2.new(1, 30, 0, 20)
@@ -216,28 +214,72 @@ SmoothPatch.BackgroundColor3 = Color3.fromRGB(12, 12, 15)
 SmoothPatch.BorderSizePixel = 0
 
 local BrandLabel = Instance.new("TextLabel", SideBar)
-BrandLabel.Size = UDim2.new(1, 0, 0, 35)
+BrandLabel.Size = UDim2.new(1, 0, 0, 30)
 BrandLabel.BackgroundTransparency = 1
 BrandLabel.Font = Enum.Font.GothamBold
 BrandLabel.TextColor3 = Color3.fromRGB(0, 255, 150)
-BrandLabel.TextSize = 13
+BrandLabel.TextSize = 12
 BrandLabel.Text = "MINHDUC HUB"
 
 local SubBrand = Instance.new("TextLabel", SideBar)
 SubBrand.Size = UDim2.new(1, 0, 0, 15)
-SubBrand.Position = UDim2.new(0, 0, 0, 28)
+SubBrand.Position = UDim2.new(0, 0, 0, 25)
 SubBrand.BackgroundTransparency = 1
 SubBrand.Font = Enum.Font.Gotham
 SubBrand.TextColor3 = Color3.fromRGB(120, 120, 130)
-SubBrand.TextSize = 9
-SubBrand.Text = "v2.0 • Premium Edition"
+SubBrand.TextSize = 8
+SubBrand.Text = "v2.1 • Extra Features"
+
+-- KHU VỰC HIỂN THỊ THÔNG TIN SERVER (FPS & PLAYER COUNT) TRÊN SIDEBAR
+local InfoStatsFrame = Instance.new("Frame", SideBar)
+InfoStatsFrame.Size = UDim2.new(1, -10, 0, 45)
+InfoStatsFrame.Position = UDim2.new(0, 5, 0, 45)
+InfoStatsFrame.BackgroundColor3 = Color3.fromRGB(18, 18, 22)
+Instance.new("UICorner", InfoStatsFrame).CornerRadius = UDim.new(0, 6)
+local InfoStroke = Instance.new("UIStroke", InfoStatsFrame)
+InfoStroke.Thickness = 1
+registerStroke(InfoStroke)
+
+local FpsLabel = Instance.new("TextLabel", InfoStatsFrame)
+FpsLabel.Size = UDim2.new(1, 0, 0, 20)
+FpsLabel.Position = UDim2.new(0, 0, 0, 3)
+FpsLabel.BackgroundTransparency = 1
+FpsLabel.Font = Enum.Font.GothamBold
+FpsLabel.TextSize = 10
+FpsLabel.TextColor3 = Color3.fromRGB(0, 255, 150)
+FpsLabel.Text = "FPS: 60"
+
+local PlayersLabel = Instance.new("TextLabel", InfoStatsFrame)
+PlayersLabel.Size = UDim2.new(1, 0, 0, 20)
+PlayersLabel.Position = UDim2.new(0, 0, 0, 22)
+PlayersLabel.BackgroundTransparency = 1
+PlayersLabel.Font = Enum.Font.GothamBold
+PlayersLabel.TextSize = 10
+PlayersLabel.TextColor3 = Color3.fromRGB(255, 200, 0)
+PlayersLabel.Text = "Players: 1/1"
+
+-- Vòng lặp cập nhật FPS và số lượng Player liên tục
+task.spawn(function()
+    local lastUpdate = tick()
+    local frameCount = 0
+    RunService.RenderStepped:Connect(function()
+        frameCount = frameCount + 1
+        local now = tick()
+        if now - lastUpdate >= 1 then
+            FpsLabel.Text = "FPS: " .. math.floor(frameCount / (now - lastUpdate))
+            PlayersLabel.Text = "Players: " .. #Players:GetPlayers() .. "/" .. Players.MaxPlayers
+            frameCount = 0
+            lastUpdate = now
+        end
+    end)
+end)
 
 local TabContainer = Instance.new("Frame", SideBar)
-TabContainer.Size = UDim2.new(1, -10, 1, -60)
-TabContainer.Position = UDim2.new(0, 5, 0, 55)
+TabContainer.Size = UDim2.new(1, -10, 1, -105)
+TabContainer.Position = UDim2.new(0, 5, 0, 98)
 TabContainer.BackgroundTransparency = 1
 local TabListLayout = Instance.new("UIListLayout", TabContainer)
-TabListLayout.Padding = UDim.new(0, 6)
+TabListLayout.Padding = UDim.new(0, 5)
 
 local ContentArea = Instance.new("Frame", MainFrame)
 ContentArea.Name = "ContentArea"
@@ -248,14 +290,14 @@ ContentArea.BackgroundTransparency = 1
 local Container1 = Instance.new("ScrollingFrame", ContentArea)
 Container1.Size = UDim2.new(1, 0, 1, 0)
 Container1.BackgroundTransparency = 1
-Container1.CanvasSize = UDim2.new(0, 0, 0, 390)
+Container1.CanvasSize = UDim2.new(0, 0, 0, 420)
 Container1.ScrollBarThickness = 2
 Container1.ScrollBarImageColor3 = Color3.fromRGB(80, 80, 90)
 
 local Container2 = Instance.new("ScrollingFrame", ContentArea)
 Container2.Size = UDim2.new(1, 0, 1, 0)
 Container2.BackgroundTransparency = 1
-Container2.CanvasSize = UDim2.new(0, 0, 0, 390)
+Container2.CanvasSize = UDim2.new(0, 0, 0, 420)
 Container2.ScrollBarThickness = 2
 Container2.Visible = false
 
@@ -266,12 +308,12 @@ UIList2.Padding = UDim.new(0, 6)
 
 local function createTabBtn(text)
     local btn = Instance.new("TextButton", TabContainer)
-    btn.Size = UDim2.new(1, 0, 0, 32)
+    btn.Size = UDim2.new(1, 0, 0, 30)
     btn.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
     btn.BackgroundTransparency = 1
     btn.TextColor3 = Color3.fromRGB(160, 160, 170)
     btn.Font = Enum.Font.GothamMedium
-    btn.TextSize = 12
+    btn.TextSize = 11
     btn.Text = "  " .. text
     btn.TextXAlignment = Enum.TextXAlignment.Left
     Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 6)
@@ -471,7 +513,7 @@ TeleportBackBtn.MouseButton1Click:Connect(function()
     end
 end)
 
--- --- [3. CỤM XUẤT HỒN PHIÊN BẢN MOBILE FIX BAY LÊN XUỐNG] ---
+-- --- [3. CỤM XUẤT HỒN PHIÊN BẢN MOBILE] ---
 local FreecamSpeedVal = 50
 local isFreecam = false
 
@@ -537,10 +579,85 @@ FreecamToggleBtn.MouseButton1Click:Connect(function()
     triggerOldFreecam(isFreecam)
 end)
 
+-- --- [4. CỤM CHẾ ĐỘ BAY (FLOAT FLOOR) KÈM NÚT LÊN/XUỐNG VÀ VẪN NHẢY ĐƯỢC] ---
+local floatHeightOffset = 0 -- Độ cao tuỳ chỉnh thêm bớt khi bay
+
+local FloatGroupFrame = Instance.new("Frame", Container1)
+FloatGroupFrame.Size = UDim2.new(1, -5, 0, 40)
+FloatGroupFrame.BackgroundColor3 = Color3.fromRGB(22, 22, 28)
+Instance.new("UICorner", FloatGroupFrame).CornerRadius = UDim.new(0, 6)
+local FloatGroupStroke = Instance.new("UIStroke", FloatGroupFrame)
+FloatGroupStroke.Thickness = 1.2
+registerStroke(FloatGroupStroke)
+
+local FloatGroupLabel = Instance.new("TextLabel", FloatGroupFrame)
+FloatGroupLabel.Size = UDim2.new(0.35, 0, 1, 0)
+FloatGroupLabel.Position = UDim2.new(0, 10, 0, 0)
+FloatGroupLabel.BackgroundTransparency = 1
+FloatGroupLabel.Font = Enum.Font.GothamMedium
+FloatGroupLabel.TextSize = 11
+FloatGroupLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+FloatGroupLabel.Text = "Bay (Float + Lên/Xuống)"
+FloatGroupLabel.TextXAlignment = Enum.TextXAlignment.Left
+
+-- Nút Hạ Xuống (-3)
+local DownBtn = Instance.new("TextButton", FloatGroupFrame)
+DownBtn.Size = UDim2.new(0, 28, 0, 24)
+DownBtn.Position = UDim2.new(0.38, 0, 0.5, -12)
+DownBtn.BackgroundColor3 = Color3.fromRGB(180, 50, 50)
+DownBtn.Font = Enum.Font.GothamBold
+DownBtn.TextSize = 11
+DownBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+DownBtn.Text = "▼"
+Instance.new("UICorner", DownBtn).CornerRadius = UDim.new(0, 4)
+
+-- Nút Bay Lên (+3)
+local UpBtn = Instance.new("TextButton", FloatGroupFrame)
+UpBtn.Size = UDim2.new(0, 28, 0, 24)
+UpBtn.Position = UDim2.new(0.53, 0, 0.5, -12)
+UpBtn.BackgroundColor3 = Color3.fromRGB(50, 180, 50)
+UpBtn.Font = Enum.Font.GothamBold
+UpBtn.TextSize = 11
+UpBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+UpBtn.Text = "▲"
+Instance.new("UICorner", UpBtn).CornerRadius = UDim.new(0, 4)
+
+DownBtn.MouseButton1Click:Connect(function()
+    floatHeightOffset = floatHeightOffset - 2
+end)
+
+UpBtn.MouseButton1Click:Connect(function()
+    floatHeightOffset = floatHeightOffset + 2
+end)
+
+local FloatToggleBtn = Instance.new("TextButton", FloatGroupFrame)
+FloatToggleBtn.Size = UDim2.new(0, 42, 0, 22)
+FloatToggleBtn.Position = UDim2.new(1, -52, 0.5, -11)
+FloatToggleBtn.BackgroundColor3 = Color3.fromRGB(55, 55, 60)
+FloatToggleBtn.Text = ""
+Instance.new("UICorner", FloatToggleBtn).CornerRadius = UDim.new(0, 11)
+
+local FloatToggleInd = Instance.new("Frame", FloatToggleBtn)
+FloatToggleInd.Size = UDim2.new(0, 16, 0, 16)
+FloatToggleInd.Position = UDim2.new(0, 3, 0.5, -8)
+FloatToggleInd.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Instance.new("UICorner", FloatToggleInd).CornerRadius = UDim.new(0, 8)
+
+FloatToggleBtn.MouseButton1Click:Connect(function()
+    floatEnabled = not floatEnabled
+    if floatEnabled then
+        FloatToggleBtn.BackgroundColor3 = Color3.fromRGB(0, 210, 120)
+        FloatToggleInd:TweenPosition(UDim2.new(1, -19, 0.5, -8), "Out", "Quad", 0.15, true)
+    else
+        FloatToggleBtn.BackgroundColor3 = Color3.fromRGB(55, 55, 60)
+        FloatToggleInd:TweenPosition(UDim2.new(0, 3, 0.5, -8), "Out", "Quad", 0.15, true)
+        floatHeightOffset = 0
+    end
+end)
+
 -- --- CÁC CHỨC NĂNG PHỤ KHÁC ---
 local AutoStandToggle = createFeatureToggle(Container1, "Tự Động Đứng Dậy (Chống Ngã)", function(s) autoStandEnabled = s end)
 local NoclipToggle    = createFeatureToggle(Container1, "Đi Xuyên Tường (Noclip)", function(s) noclipEnabled = s end)
-local FloatToggle     = createFeatureToggle(Container1, "Chế Độ Bay (Float Floor)", function(s) floatEnabled = s end)
 
 local RespawnToggle   = createFeatureToggle(Container2, "Hồi Sinh Ngay Tại Chỗ Chết", function(s) respawnEnabled = s end)
 local EspNpcToggle    = createFeatureToggle(Container2, "Bật Định Vị Sinh Vật / NPC", function(s) espEnabled = s end)
@@ -565,9 +682,7 @@ local function initDashboard(w, h)
     MainFrame.Position = UDim2.new(0.5, -w/2, 0.5, -h/2)
     ScreenGui.Enabled = true
     MainFrame.Visible = true
-    
-    -- THÔNG BÁO KHI BẬT HUB THÀNH CÔNG
-    createNotification("MINHDUC HUB ĐÃ BẬT")
+    createNotification("MINHDUC HUB ĐÃ BẬT (v2.1)")
 end
 
 PcBtn.MouseButton1Click:Connect(function() initDashboard(440, 260) end)
@@ -580,7 +695,7 @@ ToggleButton.MouseButton1Click:Connect(function()
 end)
 
 -- ==========================================
--- 5. HỆ THỐNG XỬ LÝ CORE XUẤT HỒN 3D
+-- 5. HỆ THỐNG XỬ LÝ CORE XUẤT HỒN & BAY (FLOAT)
 -- ==========================================
 local freecamPart = nil
 local freecamCFrame = CFrame.new()
@@ -638,7 +753,6 @@ RunService.RenderStepped:Connect(function()
         hum.WalkSpeed = 16
     end
     
-    -- XỬ LÝ FREECAM DI CHUYỂN THEO CAMERA (Xoay hướng nào đi hướng đó)
     if isFreecam and freecamPart then
         local camCFrame = Workspace.CurrentCamera.CFrame
         local moveVector = Vector3.new(0, 0, 0)
@@ -650,12 +764,10 @@ RunService.RenderStepped:Connect(function()
         if UserInputService:IsKeyDown(Enum.KeyCode.Space) then moveVector = moveVector + Vector3.new(0, 1, 0) end
         if UserInputService:IsKeyDown(Enum.KeyCode.LeftShift) then moveVector = moveVector - Vector3.new(0, 1, 0) end
         
-        -- Hỗ trợ Mobile JoyStick kéo tiến lùi tự động bay lên/hạ xuống theo góc ngẩng màn hình
         if hum and hum.MoveDirection.Magnitude > 0 and moveVector.Magnitude == 0 then
             local joyDir = hum.MoveDirection
             local forwardVector = camCFrame.LookVector
             local rightVector = camCFrame.RightVector
-            
             local localMoveDrive = camCFrame:VectorToObjectSpace(joyDir)
             moveVector = (forwardVector * -localMoveDrive.Z) + (rightVector * localMoveDrive.X)
         end
@@ -668,7 +780,6 @@ RunService.RenderStepped:Connect(function()
     end
 end)
 
--- Hệ thống phụ trợ tự động đứng, noclip và float floor
 task.spawn(function()
     while true do
         task.wait(1)
@@ -690,21 +801,20 @@ RunService.Stepped:Connect(function()
     end
 end)
 
+-- XỬ LÝ BAY FLOAT: Cho phép nhân vật đứng vững trên không nhưng vẫn nhảy và di chuyển thoải mái
 local floatPart = nil
 RunService.Heartbeat:Connect(function()
     if floatEnabled and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and not isFreecam then
         local hrp = LocalPlayer.Character.HumanoidRootPart
-        local hum = LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
         if not floatPart or not floatPart.Parent then  
             floatPart = Instance.new("Part", workspace)  
-            floatPart.Size = Vector3.new(5, 0.5, 5)  
-            floatPart.Transparency = 1; floatPart.Anchored = true  
+            floatPart.Size = Vector3.new(5, 0.6, 5)  
+            floatPart.Transparency = 1 
+            floatPart.Anchored = true
+            floatPart.CanCollide = true
         end  
-        if hum and (hum.FloorMaterial == Enum.Material.Air or floatPart.Position.Y > hrp.Position.Y) then  
-            floatPart.CFrame = CFrame.new(hrp.Position.X, hrp.Position.Y - 3.25, hrp.Position.Z)  
-        else  
-            floatPart.CFrame = CFrame.new(hrp.Position.X, floatPart.Position.Y, hrp.Position.Z)  
-        end  
+        -- Đặt sàn tàng hình ngay dưới chân nhân vật cộng thêm độ cao điều chỉnh (floatHeightOffset)
+        floatPart.CFrame = CFrame.new(hrp.Position.X, hrp.Position.Y - 3.5 + floatHeightOffset, hrp.Position.Z)  
     else  
         if floatPart then floatPart:Destroy() floatPart = nil end
     end
