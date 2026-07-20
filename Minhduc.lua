@@ -1,4 +1,4 @@
--- [[ MINHDUC HUB - PREMIUM RGB WIDGETS - FULL ULTIMATE EDITION 2026 ]] --
+-- [[ MINHDUC HUB - DARK EDITION WITH CUSTOM DECAL ASSETS ]] --
 local UserInputService = game:GetService("UserInputService")
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
@@ -12,7 +12,7 @@ local function registerStroke(stroke)
     table.insert(AllStrokes, stroke)
 end
 
--- Vòng lặp đổi màu mượt mà cho các viền GUI
+-- Vòng lặp đổi màu RGB mượt mà
 task.spawn(function()
     while true do
         for hue = 0, 1, 0.002 do
@@ -39,7 +39,7 @@ local function createNotification(text)
     local notifyFrame = Instance.new("Frame")
     notifyFrame.Size = UDim2.new(0, 220, 0, 45)
     notifyFrame.Position = UDim2.new(1, 30, 0, 20)
-    notifyFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
+    notifyFrame.BackgroundColor3 = Color3.fromRGB(10, 10, 14) -- Tối hơn
     notifyFrame.BorderSizePixel = 0
     Instance.new("UICorner", notifyFrame).CornerRadius = UDim.new(0, 8)
     
@@ -52,7 +52,7 @@ local function createNotification(text)
     notifyText.BackgroundTransparency = 1
     notifyText.Font = Enum.Font.GothamBold
     notifyText.TextSize = 12
-    notifyText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    notifyText.TextColor3 = Color3.fromRGB(240, 240, 240)
     notifyText.Text = text
     
     notifyFrame.Parent = NotifyGui
@@ -84,7 +84,7 @@ PassGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 local PassFrame = Instance.new("Frame")
 PassFrame.Size = UDim2.new(0, 260, 0, 140)
 PassFrame.Position = UDim2.new(0.5, -130, 0.5, -70)
-PassFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
+PassFrame.BackgroundColor3 = Color3.fromRGB(12, 12, 16) -- Tông tối hơn
 PassFrame.BorderSizePixel = 0
 Instance.new("UICorner", PassFrame).CornerRadius = UDim.new(0, 10)
 local PassStroke = Instance.new("UIStroke", PassFrame)
@@ -103,7 +103,7 @@ PassTitle.Text = "HỆ THỐNG BẢO MẬT HUB"
 local PassInput = Instance.new("TextBox", PassFrame)
 PassInput.Size = UDim2.new(0.9, 0, 0, 35)
 PassInput.Position = UDim2.new(0.05, 0, 0.3, 0)
-PassInput.BackgroundColor3 = Color3.fromRGB(35, 35, 40)
+PassInput.BackgroundColor3 = Color3.fromRGB(22, 22, 28)
 PassInput.TextColor3 = Color3.fromRGB(255, 255, 255)
 PassInput.Font = Enum.Font.Gotham
 PassInput.TextSize = 13
@@ -114,7 +114,7 @@ Instance.new("UICorner", PassInput).CornerRadius = UDim.new(0, 6)
 local SubmitBtn = Instance.new("TextButton", PassFrame)
 SubmitBtn.Size = UDim2.new(0.9, 0, 0, 35)
 SubmitBtn.Position = UDim2.new(0.05, 0, 0.65, 0)
-SubmitBtn.BackgroundColor3 = Color3.fromRGB(0, 160, 255)
+SubmitBtn.BackgroundColor3 = Color3.fromRGB(0, 120, 200)
 SubmitBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 SubmitBtn.Font = Enum.Font.GothamBold
 SubmitBtn.TextSize = 13
@@ -124,7 +124,7 @@ Instance.new("UICorner", SubmitBtn).CornerRadius = UDim.new(0, 6)
 local DeviceFrame = Instance.new("Frame")
 DeviceFrame.Size = UDim2.new(0, 280, 0, 130)
 DeviceFrame.Position = UDim2.new(0.5, -140, 0.5, -65)
-DeviceFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
+DeviceFrame.BackgroundColor3 = Color3.fromRGB(12, 12, 16)
 DeviceFrame.BorderSizePixel = 0
 DeviceFrame.Visible = false
 Instance.new("UICorner", DeviceFrame).CornerRadius = UDim.new(0, 10)
@@ -144,7 +144,7 @@ DeviceTitle.Text = "VUI LÒNG CHỌN GIAO DIỆN"
 local PcBtn = Instance.new("TextButton", DeviceFrame)
 PcBtn.Size = UDim2.new(0.42, 0, 0, 45)
 PcBtn.Position = UDim2.new(0.06, 0, 0.45, 0)
-PcBtn.BackgroundColor3 = Color3.fromRGB(40, 40, 45)
+PcBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
 PcBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 PcBtn.Font = Enum.Font.GothamBold
 PcBtn.TextSize = 12
@@ -154,7 +154,7 @@ Instance.new("UICorner", PcBtn).CornerRadius = UDim.new(0, 6)
 local MobileBtn = Instance.new("TextButton", DeviceFrame)
 MobileBtn.Size = UDim2.new(0.42, 0, 0, 45)
 MobileBtn.Position = UDim2.new(0.52, 0, 0.45, 0)
-MobileBtn.BackgroundColor3 = Color3.fromRGB(40, 40, 45)
+MobileBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
 MobileBtn.TextColor3 = Color3.fromRGB(0, 255, 150)
 MobileBtn.Font = Enum.Font.GothamBold
 MobileBtn.TextSize = 12
@@ -162,7 +162,7 @@ MobileBtn.Text = "DI ĐỘNG (MOBILE)"
 Instance.new("UICorner", MobileBtn).CornerRadius = UDim.new(0, 6)
 
 -- ==========================================
--- 2. THIẾT KẾ MAIN GUI - BANNER & SIDEBAR
+-- 2. THIẾT KẾ MAIN GUI - TỐI VÀ CÓ HÌNH ẢNH DECAL
 -- ==========================================
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "ModernDashboardHUB"
@@ -171,27 +171,29 @@ ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 ScreenGui.Enabled = false
 ScreenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 
-local ToggleButton = Instance.new("TextButton")
+-- NÚT ẨN/HIỆN DÙNG HÌNH ẢNH (ID: 872392514)
+local ToggleButton = Instance.new("ImageButton")
 ToggleButton.Name = "HUBToggle"
 ToggleButton.Size = UDim2.new(0, 50, 0, 50)
 ToggleButton.Position = UDim2.new(0, 15, 0, 15)
-ToggleButton.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
-ToggleButton.BackgroundTransparency = 0.2
-ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-ToggleButton.Font = Enum.Font.GothamBold
-ToggleButton.TextSize = 12
-ToggleButton.Text = "HUB"
+ToggleButton.BackgroundColor3 = Color3.fromRGB(10, 10, 12)
+ToggleButton.BackgroundTransparency = 0.1
+ToggleButton.Image = "rbxassetid://872392514"
 local UICornerToggle = Instance.new("UICorner", ToggleButton)
-UICornerToggle.CornerRadius = UDim.new(0, 25)
-Instance.new("UIStroke", ToggleButton).Color = Color3.fromRGB(80, 80, 90)
+UICornerToggle.CornerRadius = UDim.new(1, 0) -- Tròn xoe
+local ToggleStroke = Instance.new("UIStroke", ToggleButton)
+ToggleStroke.Thickness = 2
+registerStroke(ToggleStroke)
 ToggleButton.Parent = ScreenGui
 
+-- KHUNG CHÍNH GIAO DIỆN TỐI (DARK THEME)
 local MainFrame = Instance.new("Frame")
 MainFrame.Name = "MainFrame"
-MainFrame.BackgroundColor3 = Color3.fromRGB(16, 16, 20)
+MainFrame.BackgroundColor3 = Color3.fromRGB(10, 10, 14) -- Màu tối mờ
 MainFrame.BorderSizePixel = 0
 MainFrame.Active = true
 MainFrame.Visible = false
+MainFrame.ClipsDescendants = true
 Instance.new("UICorner", MainFrame).CornerRadius = UDim.new(0, 10)
 
 local MainStroke = Instance.new("UIStroke", MainFrame)
@@ -199,19 +201,34 @@ MainStroke.Thickness = 2
 registerStroke(MainStroke)
 MainFrame.Parent = ScreenGui
 
+-- HÌNH ẢNH NỀN GIAO DIỆN CHÍNH (ID: 13314371732)
+local MainBackgroundImage = Instance.new("ImageLabel", MainFrame)
+MainBackgroundImage.Name = "BackgroundImage"
+MainBackgroundImage.Size = UDim2.new(1, 0, 1, 0)
+MainBackgroundImage.Position = UDim2.new(0, 0, 0, 0)
+MainBackgroundImage.Image = "rbxassetid://13314371732"
+MainBackgroundImage.ImageTransparency = 0.75 -- Phủ tối mờ hình nền để chữ hiển thị rõ ràng
+MainBackgroundImage.ScaleType = Enum.ScaleType.Crop
+MainBackgroundImage.BackgroundTransparency = 1
+MainBackgroundImage.ZIndex = 0
+
 local SideBar = Instance.new("Frame", MainFrame)
 SideBar.Name = "SideBar"
 SideBar.Size = UDim2.new(0, 110, 1, 0)
-SideBar.BackgroundColor3 = Color3.fromRGB(12, 12, 15)
+SideBar.BackgroundColor3 = Color3.fromRGB(8, 8, 10)
+SideBar.BackgroundTransparency = 0.2
 SideBar.BorderSizePixel = 0
+SideBar.ZIndex = 2
 local SideBarCorner = Instance.new("UICorner", SideBar)
 SideBarCorner.CornerRadius = UDim.new(0, 10)
 
 local SmoothPatch = Instance.new("Frame", SideBar)
 SmoothPatch.Size = UDim2.new(0, 15, 1, 0)
 SmoothPatch.Position = UDim2.new(1, -15, 0, 0)
-SmoothPatch.BackgroundColor3 = Color3.fromRGB(12, 12, 15)
+SmoothPatch.BackgroundColor3 = Color3.fromRGB(8, 8, 10)
+SmoothPatch.BackgroundTransparency = 0.2
 SmoothPatch.BorderSizePixel = 0
+SmoothPatch.ZIndex = 2
 
 local BrandLabel = Instance.new("TextLabel", SideBar)
 BrandLabel.Size = UDim2.new(1, 0, 0, 30)
@@ -220,6 +237,7 @@ BrandLabel.Font = Enum.Font.GothamBold
 BrandLabel.TextColor3 = Color3.fromRGB(0, 255, 150)
 BrandLabel.TextSize = 12
 BrandLabel.Text = "MINHDUC HUB"
+BrandLabel.ZIndex = 3
 
 local SubBrand = Instance.new("TextLabel", SideBar)
 SubBrand.Size = UDim2.new(1, 0, 0, 15)
@@ -228,13 +246,15 @@ SubBrand.BackgroundTransparency = 1
 SubBrand.Font = Enum.Font.Gotham
 SubBrand.TextColor3 = Color3.fromRGB(120, 120, 130)
 SubBrand.TextSize = 8
-SubBrand.Text = "v2.5 • Final Ultimate"
+SubBrand.Text = "v2.5 • Dark Decal"
+SubBrand.ZIndex = 3
 
--- KHU VỰC HIỂN THỊ THÔNG TIN SERVER (FPS & PLAYER COUNT) TRÊN SIDEBAR
+-- STATS SERVER (FPS & PLAYER)
 local InfoStatsFrame = Instance.new("Frame", SideBar)
 InfoStatsFrame.Size = UDim2.new(1, -10, 0, 45)
 InfoStatsFrame.Position = UDim2.new(0, 5, 0, 45)
-InfoStatsFrame.BackgroundColor3 = Color3.fromRGB(18, 18, 22)
+InfoStatsFrame.BackgroundColor3 = Color3.fromRGB(14, 14, 18)
+InfoStatsFrame.ZIndex = 3
 Instance.new("UICorner", InfoStatsFrame).CornerRadius = UDim.new(0, 6)
 local InfoStroke = Instance.new("UIStroke", InfoStatsFrame)
 InfoStroke.Thickness = 1
@@ -248,6 +268,7 @@ FpsLabel.Font = Enum.Font.GothamBold
 FpsLabel.TextSize = 10
 FpsLabel.TextColor3 = Color3.fromRGB(0, 255, 150)
 FpsLabel.Text = "FPS: 60"
+FpsLabel.ZIndex = 4
 
 local PlayersLabel = Instance.new("TextLabel", InfoStatsFrame)
 PlayersLabel.Size = UDim2.new(1, 0, 0, 20)
@@ -257,8 +278,8 @@ PlayersLabel.Font = Enum.Font.GothamBold
 PlayersLabel.TextSize = 10
 PlayersLabel.TextColor3 = Color3.fromRGB(255, 200, 0)
 PlayersLabel.Text = "Players: 1/1"
+PlayersLabel.ZIndex = 4
 
--- Vòng lặp cập nhật FPS và số lượng Player liên tục
 task.spawn(function()
     local lastUpdate = tick()
     local frameCount = 0
@@ -278,6 +299,7 @@ local TabContainer = Instance.new("Frame", SideBar)
 TabContainer.Size = UDim2.new(1, -10, 1, -105)
 TabContainer.Position = UDim2.new(0, 5, 0, 98)
 TabContainer.BackgroundTransparency = 1
+TabContainer.ZIndex = 3
 local TabListLayout = Instance.new("UIListLayout", TabContainer)
 TabListLayout.Padding = UDim.new(0, 5)
 
@@ -286,13 +308,14 @@ ContentArea.Name = "ContentArea"
 ContentArea.Size = UDim2.new(1, -120, 1, -15)
 ContentArea.Position = UDim2.new(0, 115, 0, 10)
 ContentArea.BackgroundTransparency = 1
+ContentArea.ZIndex = 2
 
 local Container1 = Instance.new("ScrollingFrame", ContentArea)
 Container1.Size = UDim2.new(1, 0, 1, 0)
 Container1.BackgroundTransparency = 1
 Container1.CanvasSize = UDim2.new(0, 0, 0, 420)
 Container1.ScrollBarThickness = 2
-Container1.ScrollBarImageColor3 = Color3.fromRGB(80, 80, 90)
+Container1.ScrollBarImageColor3 = Color3.fromRGB(60, 60, 70)
 
 local Container2 = Instance.new("ScrollingFrame", ContentArea)
 Container2.Size = UDim2.new(1, 0, 1, 0)
@@ -309,13 +332,14 @@ UIList2.Padding = UDim.new(0, 6)
 local function createTabBtn(text)
     local btn = Instance.new("TextButton", TabContainer)
     btn.Size = UDim2.new(1, 0, 0, 30)
-    btn.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
+    btn.BackgroundColor3 = Color3.fromRGB(16, 16, 20)
     btn.BackgroundTransparency = 1
-    btn.TextColor3 = Color3.fromRGB(160, 160, 170)
+    btn.TextColor3 = Color3.fromRGB(150, 150, 160)
     btn.Font = Enum.Font.GothamMedium
     btn.TextSize = 11
     btn.Text = "  " .. text
     btn.TextXAlignment = Enum.TextXAlignment.Left
+    btn.ZIndex = 3
     Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 6)
     return btn
 end
@@ -323,25 +347,26 @@ end
 local Tab1Btn = createTabBtn("Movement")
 local Tab2Btn = createTabBtn("Visuals / Teleport")
 
-Tab1Btn.BackgroundTransparency = 0
+Tab1Btn.BackgroundTransparency = 0.3
 Tab1Btn.TextColor3 = Color3.fromRGB(255, 255, 255)
 
 Tab1Btn.MouseButton1Click:Connect(function()
     Container1.Visible = true; Container2.Visible = false
-    Tab1Btn.BackgroundTransparency = 0; Tab1Btn.TextColor3 = Color3.fromRGB(255, 255, 255)
-    Tab2Btn.BackgroundTransparency = 1; Tab2Btn.TextColor3 = Color3.fromRGB(160, 160, 170)
+    Tab1Btn.BackgroundTransparency = 0.3; Tab1Btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Tab2Btn.BackgroundTransparency = 1; Tab2Btn.TextColor3 = Color3.fromRGB(150, 150, 160)
 end)
 
 Tab2Btn.MouseButton1Click:Connect(function()
     Container1.Visible = false; Container2.Visible = true
-    Tab1Btn.BackgroundTransparency = 1; Tab1Btn.TextColor3 = Color3.fromRGB(160, 160, 170)
-    Tab2Btn.BackgroundTransparency = 0; Tab2Btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Tab1Btn.BackgroundTransparency = 1; Tab1Btn.TextColor3 = Color3.fromRGB(150, 150, 160)
+    Tab2Btn.BackgroundTransparency = 0.3; Tab2Btn.TextColor3 = Color3.fromRGB(255, 255, 255)
 end)
 
 local function createFeatureToggle(parent, text, defaultCallback)
     local frame = Instance.new("Frame", parent)
     frame.Size = UDim2.new(1, -5, 0, 40)
-    frame.BackgroundColor3 = Color3.fromRGB(22, 22, 28)
+    frame.BackgroundColor3 = Color3.fromRGB(14, 14, 18)
+    frame.BackgroundTransparency = 0.25
     Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 6)
     
     local elementStroke = Instance.new("UIStroke", frame)
@@ -361,7 +386,7 @@ local function createFeatureToggle(parent, text, defaultCallback)
     local toggleBtn = Instance.new("TextButton", frame)
     toggleBtn.Size = UDim2.new(0, 42, 0, 22)
     toggleBtn.Position = UDim2.new(1, -52, 0.5, -11)
-    toggleBtn.BackgroundColor3 = Color3.fromRGB(45, 45, 50)
+    toggleBtn.BackgroundColor3 = Color3.fromRGB(35, 35, 40)
     toggleBtn.Text = ""
     Instance.new("UICorner", toggleBtn).CornerRadius = UDim.new(0, 11)
     
@@ -375,10 +400,10 @@ local function createFeatureToggle(parent, text, defaultCallback)
     toggleBtn.MouseButton1Click:Connect(function()
         state = not state
         if state then
-            toggleBtn.BackgroundColor3 = Color3.fromRGB(0, 210, 120)
+            toggleBtn.BackgroundColor3 = Color3.fromRGB(0, 200, 110)
             indicator:TweenPosition(UDim2.new(1, -19, 0.5, -8), "Out", "Quad", 0.15, true)
         else
-            toggleBtn.BackgroundColor3 = Color3.fromRGB(45, 45, 50)
+            toggleBtn.BackgroundColor3 = Color3.fromRGB(35, 35, 40)
             indicator:TweenPosition(UDim2.new(0, 3, 0.5, -8), "Out", "Quad", 0.15, true)
         end
         defaultCallback(state)
@@ -387,10 +412,8 @@ local function createFeatureToggle(parent, text, defaultCallback)
 end
 
 -- ==========================================
--- 3. THIẾT LẬP CÁC Ô CHỨC NĂNG VÀ WIDGET FLOAT
+-- 3. CÁC TÍNH NĂNG CHÍNH VÀ FLOAT WIDGET
 -- ==========================================
-
--- TẠO GUI ĐIỀU KHIỂN FLOAT LÊN XUỐNG BÊN NGOÀI ĐỘC LẬP
 local FloatExternalGui = Instance.new("ScreenGui")
 FloatExternalGui.Name = "FloatControllerExternal"
 FloatExternalGui.ResetOnSpawn = false
@@ -400,8 +423,8 @@ FloatExternalGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 local ExtFrame = Instance.new("Frame", FloatExternalGui)
 ExtFrame.Size = UDim2.new(0, 45, 0, 90)
 ExtFrame.Position = UDim2.new(0.85, 0, 0.6, 0)
-ExtFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
-ExtFrame.BackgroundTransparency = 0.2
+ExtFrame.BackgroundColor3 = Color3.fromRGB(12, 12, 16)
+ExtFrame.BackgroundTransparency = 0.25
 Instance.new("UICorner", ExtFrame).CornerRadius = UDim.new(0, 8)
 local ExtStroke = Instance.new("UIStroke", ExtFrame)
 ExtStroke.Thickness = 1.5
@@ -410,7 +433,7 @@ registerStroke(ExtStroke)
 local ExtUpBtn = Instance.new("TextButton", ExtFrame)
 ExtUpBtn.Size = UDim2.new(0, 33, 0, 33)
 ExtUpBtn.Position = UDim2.new(0.5, -16.5, 0, 8)
-ExtUpBtn.BackgroundColor3 = Color3.fromRGB(30, 30, 35)
+ExtUpBtn.BackgroundColor3 = Color3.fromRGB(22, 22, 28)
 ExtUpBtn.Font = Enum.Font.GothamBold
 ExtUpBtn.TextSize = 14
 ExtUpBtn.TextColor3 = Color3.fromRGB(0, 255, 150)
@@ -423,7 +446,7 @@ registerStroke(ExtUpStroke)
 local ExtDownBtn = Instance.new("TextButton", ExtFrame)
 ExtDownBtn.Size = UDim2.new(0, 33, 0, 33)
 ExtDownBtn.Position = UDim2.new(0.5, -16.5, 1, -41)
-ExtDownBtn.BackgroundColor3 = Color3.fromRGB(30, 30, 35)
+ExtDownBtn.BackgroundColor3 = Color3.fromRGB(22, 22, 28)
 ExtDownBtn.Font = Enum.Font.GothamBold
 ExtDownBtn.TextSize = 14
 ExtDownBtn.TextColor3 = Color3.fromRGB(255, 70, 70)
@@ -433,7 +456,6 @@ local ExtDownStroke = Instance.new("UIStroke", ExtDownBtn)
 ExtDownStroke.Thickness = 1
 registerStroke(ExtDownStroke)
 
--- Tính năng kéo giữ di chuyển Mini Panel Float Ngoài
 local extDragging, extDragStart, extStartPos
 ExtFrame.InputBegan:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
@@ -454,13 +476,14 @@ UserInputService.InputEnded:Connect(function(input)
     end
 end)
 
--- --- [1. CỤM CHỈNH TỐC ĐỘ CHẠY] ---
+-- --- [1. CHỈNH TỐC ĐỘ] ---
 local SpeedVal = 16
 local speedActive = false
 
 local SpeedGroupFrame = Instance.new("Frame", Container1)
 SpeedGroupFrame.Size = UDim2.new(1, -5, 0, 40)
-SpeedGroupFrame.BackgroundColor3 = Color3.fromRGB(22, 22, 28)
+SpeedGroupFrame.BackgroundColor3 = Color3.fromRGB(14, 14, 18)
+SpeedGroupFrame.BackgroundTransparency = 0.25
 Instance.new("UICorner", SpeedGroupFrame).CornerRadius = UDim.new(0, 6)
 local SpeedStroke = Instance.new("UIStroke", SpeedGroupFrame)
 SpeedStroke.Thickness = 1.2
@@ -479,7 +502,7 @@ SpeedLabel.TextXAlignment = Enum.TextXAlignment.Left
 local SpeedInputBox = Instance.new("TextBox", SpeedGroupFrame)
 SpeedInputBox.Size = UDim2.new(0, 50, 0, 22)
 SpeedInputBox.Position = UDim2.new(0.46, 0, 0.5, -11)
-SpeedInputBox.BackgroundColor3 = Color3.fromRGB(38, 38, 45)
+SpeedInputBox.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
 SpeedInputBox.TextColor3 = Color3.fromRGB(0, 255, 150)
 SpeedInputBox.Font = Enum.Font.GothamBold
 SpeedInputBox.TextSize = 11
@@ -494,7 +517,7 @@ end)
 local SpeedToggleBtn = Instance.new("TextButton", SpeedGroupFrame)
 SpeedToggleBtn.Size = UDim2.new(0, 42, 0, 22)
 SpeedToggleBtn.Position = UDim2.new(1, -52, 0.5, -11)
-SpeedToggleBtn.BackgroundColor3 = Color3.fromRGB(55, 55, 60)
+SpeedToggleBtn.BackgroundColor3 = Color3.fromRGB(35, 35, 40)
 SpeedToggleBtn.Text = ""
 Instance.new("UICorner", SpeedToggleBtn).CornerRadius = UDim.new(0, 11)
 
@@ -507,20 +530,21 @@ Instance.new("UICorner", SpeedToggleInd).CornerRadius = UDim.new(0, 8)
 SpeedToggleBtn.MouseButton1Click:Connect(function()
     speedActive = not speedActive
     if speedActive then
-        SpeedToggleBtn.BackgroundColor3 = Color3.fromRGB(0, 210, 120)
+        SpeedToggleBtn.BackgroundColor3 = Color3.fromRGB(0, 200, 110)
         SpeedToggleInd:TweenPosition(UDim2.new(1, -19, 0.5, -8), "Out", "Quad", 0.15, true)
     else
-        SpeedToggleBtn.BackgroundColor3 = Color3.fromRGB(55, 55, 60)
+        SpeedToggleBtn.BackgroundColor3 = Color3.fromRGB(35, 35, 40)
         SpeedToggleInd:TweenPosition(UDim2.new(0, 3, 0.5, -8), "Out", "Quad", 0.15, true)
     end
 end)
 
--- --- [2. CỤM TUA NGƯỢC VỊ TRÍ] ---
+-- --- [2. TUA NGƯỢC VỊ TRÍ] ---
 local SavedLocation = nil
 
 local RewindGroupFrame = Instance.new("Frame", Container1)
 RewindGroupFrame.Size = UDim2.new(1, -5, 0, 40)
-RewindGroupFrame.BackgroundColor3 = Color3.fromRGB(22, 22, 28)
+RewindGroupFrame.BackgroundColor3 = Color3.fromRGB(14, 14, 18)
+RewindGroupFrame.BackgroundTransparency = 0.25
 Instance.new("UICorner", RewindGroupFrame).CornerRadius = UDim.new(0, 6)
 local RewindStroke = Instance.new("UIStroke", RewindGroupFrame)
 RewindStroke.Thickness = 1.2
@@ -539,7 +563,7 @@ RewindLabel.TextXAlignment = Enum.TextXAlignment.Left
 local SavePosBtn = Instance.new("TextButton", RewindGroupFrame)
 SavePosBtn.Size = UDim2.new(0, 85, 0, 24)
 SavePosBtn.Position = UDim2.new(0.42, 0, 0.5, -12)
-SavePosBtn.BackgroundColor3 = Color3.fromRGB(30, 80, 180)
+SavePosBtn.BackgroundColor3 = Color3.fromRGB(20, 60, 140)
 SavePosBtn.Font = Enum.Font.GothamBold
 SavePosBtn.TextSize = 10
 SavePosBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -549,7 +573,7 @@ Instance.new("UICorner", SavePosBtn).CornerRadius = UDim.new(0, 4)
 local TeleportBackBtn = Instance.new("TextButton", RewindGroupFrame)
 TeleportBackBtn.Size = UDim2.new(0, 75, 0, 24)
 TeleportBackBtn.Position = UDim2.new(1, -85, 0.5, -12)
-TeleportBackBtn.BackgroundColor3 = Color3.fromRGB(140, 50, 220)
+TeleportBackBtn.BackgroundColor3 = Color3.fromRGB(100, 30, 170)
 TeleportBackBtn.Font = Enum.Font.GothamBold
 TeleportBackBtn.TextSize = 10
 TeleportBackBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -577,20 +601,21 @@ TeleportBackBtn.MouseButton1Click:Connect(function()
     end
 end)
 
--- --- [3. CỤM XUẤT HỒN PHIÊN BẢN MOBILE] ---
+-- --- [3. XUẤT HỒN] ---
 local FreecamSpeedVal = 50
 local isFreecam = false
 
 local FreecamGroupFrame = Instance.new("Frame", Container1)
 FreecamGroupFrame.Size = UDim2.new(1, -5, 0, 40)
-FreecamGroupFrame.BackgroundColor3 = Color3.fromRGB(22, 22, 28)
+FreecamGroupFrame.BackgroundColor3 = Color3.fromRGB(14, 14, 18)
+FreecamGroupFrame.BackgroundTransparency = 0.25
 Instance.new("UICorner", FreecamGroupFrame).CornerRadius = UDim.new(0, 6)
 local FreecamStroke = Instance.new("UIStroke", FreecamGroupFrame)
 FreecamStroke.Thickness = 1.2
 registerStroke(FreecamStroke)
 
 local FreecamLabel = Instance.new("TextLabel", FreecamGroupFrame)
-FreecamLabel.Size = UDim2.new(0.4, 0, 1, 0)
+FreecamLabel.Size = UDim2.new(0, 4, 1, 0)
 FreecamLabel.Position = UDim2.new(0, 10, 0, 0)
 FreecamLabel.BackgroundTransparency = 1
 FreecamLabel.Font = Enum.Font.GothamMedium
@@ -602,7 +627,7 @@ FreecamLabel.TextXAlignment = Enum.TextXAlignment.Left
 local FreecamSpeedInput = Instance.new("TextBox", FreecamGroupFrame)
 FreecamSpeedInput.Size = UDim2.new(0, 50, 0, 22)
 FreecamSpeedInput.Position = UDim2.new(0.46, 0, 0.5, -11)
-FreecamSpeedInput.BackgroundColor3 = Color3.fromRGB(38, 38, 45)
+FreecamSpeedInput.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
 FreecamSpeedInput.TextColor3 = Color3.fromRGB(255, 255, 0)
 FreecamSpeedInput.Font = Enum.Font.GothamBold
 FreecamSpeedInput.TextSize = 11
@@ -617,7 +642,7 @@ end)
 local FreecamToggleBtn = Instance.new("TextButton", FreecamGroupFrame)
 FreecamToggleBtn.Size = UDim2.new(0, 42, 0, 22)
 FreecamToggleBtn.Position = UDim2.new(1, -52, 0.5, -11)
-FreecamToggleBtn.BackgroundColor3 = Color3.fromRGB(55, 55, 60)
+FreecamToggleBtn.BackgroundColor3 = Color3.fromRGB(35, 35, 40)
 FreecamToggleBtn.Text = ""
 Instance.new("UICorner", FreecamToggleBtn).CornerRadius = UDim.new(0, 11)
 
@@ -633,23 +658,24 @@ local triggerOldFreecam
 FreecamToggleBtn.MouseButton1Click:Connect(function()
     isFreecam = not isFreecam
     if isFreecam then
-        FreecamToggleBtn.BackgroundColor3 = Color3.fromRGB(0, 210, 120)
+        FreecamToggleBtn.BackgroundColor3 = Color3.fromRGB(0, 200, 110)
         FreecamToggleInd:TweenPosition(UDim2.new(1, -19, 0.5, -8), "Out", "Quad", 0.15, true)
     else
-        FreecamToggleBtn.BackgroundColor3 = Color3.fromRGB(55, 55, 60)
+        FreecamToggleBtn.BackgroundColor3 = Color3.fromRGB(35, 35, 40)
         FreecamToggleInd:TweenPosition(UDim2.new(0, 3, 0.5, -8), "Out", "Quad", 0.15, true)
     end
     triggerOldFreecam(isFreecam)
 end)
 
--- --- [4. CỤM CHẾ ĐỘ BAY (FLOAT FLOOR)] ---
+-- --- [4. BAY FLOAT FLOOR] ---
 local currentFloatHeight = 0
 local isHoldingUp = false
 local isHoldingDown = false
 
 local FloatGroupFrame = Instance.new("Frame", Container1)
 FloatGroupFrame.Size = UDim2.new(1, -5, 0, 40)
-FloatGroupFrame.BackgroundColor3 = Color3.fromRGB(22, 22, 28)
+FloatGroupFrame.BackgroundColor3 = Color3.fromRGB(14, 14, 18)
+FloatGroupFrame.BackgroundTransparency = 0.25
 Instance.new("UICorner", FloatGroupFrame).CornerRadius = UDim.new(0, 6)
 local FloatGroupStroke = Instance.new("UIStroke", FloatGroupFrame)
 FloatGroupStroke.Thickness = 1.2
@@ -668,7 +694,7 @@ FloatGroupLabel.TextXAlignment = Enum.TextXAlignment.Left
 local FloatToggleBtn = Instance.new("TextButton", FloatGroupFrame)
 FloatToggleBtn.Size = UDim2.new(0, 42, 0, 22)
 FloatToggleBtn.Position = UDim2.new(1, -52, 0.5, -11)
-FloatToggleBtn.BackgroundColor3 = Color3.fromRGB(55, 55, 60)
+FloatToggleBtn.BackgroundColor3 = Color3.fromRGB(35, 35, 40)
 FloatToggleBtn.Text = ""
 Instance.new("UICorner", FloatToggleBtn).CornerRadius = UDim.new(0, 11)
 
@@ -681,7 +707,7 @@ Instance.new("UICorner", FloatToggleInd).CornerRadius = UDim.new(0, 8)
 FloatToggleBtn.MouseButton1Click:Connect(function()
     floatEnabled = not floatEnabled
     if floatEnabled then
-        FloatToggleBtn.BackgroundColor3 = Color3.fromRGB(0, 210, 120)
+        FloatToggleBtn.BackgroundColor3 = Color3.fromRGB(0, 200, 110)
         FloatToggleInd:TweenPosition(UDim2.new(1, -19, 0.5, -8), "Out", "Quad", 0.15, true)
         
         local char = LocalPlayer.Character
@@ -691,13 +717,12 @@ FloatToggleBtn.MouseButton1Click:Connect(function()
         end
         FloatExternalGui.Enabled = true
     else
-        FloatToggleBtn.BackgroundColor3 = Color3.fromRGB(55, 55, 60)
+        FloatToggleBtn.BackgroundColor3 = Color3.fromRGB(35, 35, 40)
         FloatToggleInd:TweenPosition(UDim2.new(0, 3, 0.5, -8), "Out", "Quad", 0.15, true)
         FloatExternalGui.Enabled = false
     end
 end)
 
--- LOGIC GIỮ NÚT ĐỂ BAY LÊN / HẠ XUỐNG LIÊN TỤC
 task.spawn(function()
     while true do
         task.wait(0.03)
@@ -739,7 +764,6 @@ ExtDownBtn.InputEnded:Connect(function(input)
     end
 end)
 
--- BẮT SỰ KIỆN NÚT SPACE ĐỂ SÀN FLOAT TỰ ĐỘNG ĐẨY LÊN (KHÔNG BỊ TỤT)
 UserInputService.InputBegan:Connect(function(input, gameProcessed)
     if gameProcessed then return end
     if input.KeyCode == Enum.KeyCode.Space and floatEnabled then
@@ -751,7 +775,7 @@ UserInputService.InputBegan:Connect(function(input, gameProcessed)
     end
 end)
 
--- --- CÁC CHỨC NĂNG PHỤ KHÁC ---
+-- --- CÁC CHỨC NĂNG PHỤ ---
 local AutoStandToggle = createFeatureToggle(Container1, "Tự Động Đứng Dậy (Chống Ngã)", function(s) autoStandEnabled = s end)
 local NoclipToggle    = createFeatureToggle(Container1, "Đi Xuyên Tường (Noclip)", function(s) noclipEnabled = s end)
 
@@ -760,8 +784,7 @@ local EspNpcToggle    = createFeatureToggle(Container2, "Bật Định Vị Sinh
 local EspPlayerToggle = createFeatureToggle(Container2, "Bật Định Vị Người Chơi khác", function(s) playerEspEnabled = s end)
 
 -- ==========================================
--- 4. LOGIC ĐĂNG NHẬP CHỌN THIẾT BỊ & ẨN/HIỆN
--- MẬT KHẨU MỚI: MINHDUCHUB
+-- 4. LOGIC ĐĂNG NHẬP & CHỌN THIẾT BỊ
 -- ==========================================
 SubmitBtn.MouseButton1Click:Connect(function()
     if PassInput.Text == "MINHDUCHUB" then
@@ -792,7 +815,7 @@ ToggleButton.MouseButton1Click:Connect(function()
 end)
 
 -- ==========================================
--- 5. HỆ THỐNG XỬ LÝ CORE XUẤT HỒN & BAY (FLOAT)
+-- 5. XỬ LÝ CORE XUẤT HỒN & ENGINE BAY
 -- ==========================================
 local freecamPart = nil
 local freecamCFrame = CFrame.new()
@@ -898,7 +921,6 @@ RunService.Stepped:Connect(function()
     end
 end)
 
--- ENGINE VÒNG LẶP SÀN FLOAT ĐỨNG IM CỐ ĐỊNH
 local floatPart = nil
 RunService.Heartbeat:Connect(function()
     if floatEnabled and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and not isFreecam then
@@ -958,7 +980,7 @@ RunService.RenderStepped:Connect(function()
 end)
 
 -- ==========================================
--- 6. HỆ THỐNG DI CHUYỂN BẢNG CHÍNH (DRAG)
+-- 6. HỆ THỐNG DRAG VÀ KÉO GIÃN
 -- ==========================================
 local dragging, dragStart, startPos
 local isResizingGlobal = false 
@@ -971,9 +993,6 @@ SideBar.InputBegan:Connect(function(input)
     end
 end)
 
--- ==========================================
--- 7. THUẬT TOÁN KÉO GIÃN NEON TRẮNG BẠC CHUẨN XÁC
--- ==========================================
 local activeResizeHandle = nil
 local basePos, baseSize, startMousePos
 
