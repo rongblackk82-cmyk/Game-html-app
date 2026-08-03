@@ -1,4 +1,4 @@
--- [[ MINHDUC HUB - FIXED FLOAT ON DEATH, ADDED SPEED SETTING, LOADING SCREEN & FREECAM JUMP ]] --
+-- [[ MINHDUC HUB - FIXED FLOAT ON DEATH, SPEED SAVED ON RESPAWN, LOADING SCREEN, FREECAM & TAB WORLD ]] --
 local UserInputService = game:GetService("UserInputService")
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
@@ -28,7 +28,7 @@ task.spawn(function()
 end)
 
 -- ==========================================
--- ĐỊNH NGHĨA HÀM TẠO THÔNG BÁO (NOTIFY)
+-- ĐỊNH NGHĨA HÀM TẠO THÔNG BÁO HỆ THỐNG (NOTIFY HIỆN ĐẠI)
 -- ==========================================
 local NotifyGui = Instance.new("ScreenGui")
 NotifyGui.Name = "HubNotificationSystem"
@@ -37,9 +37,9 @@ NotifyGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 
 local function createNotification(text)
     local notifyFrame = Instance.new("Frame")
-    notifyFrame.Size = UDim2.new(0, 220, 0, 45)
+    notifyFrame.Size = UDim2.new(0, 240, 0, 48)
     notifyFrame.Position = UDim2.new(1, 30, 0, 20)
-    notifyFrame.BackgroundColor3 = Color3.fromRGB(10, 10, 14)
+    notifyFrame.BackgroundColor3 = Color3.fromRGB(12, 12, 18)
     notifyFrame.BorderSizePixel = 0
     Instance.new("UICorner", notifyFrame).CornerRadius = UDim.new(0, 8)
     
@@ -47,18 +47,30 @@ local function createNotification(text)
     notifyStroke.Thickness = 1.5
     registerStroke(notifyStroke)
     
+    local iconLabel = Instance.new("TextLabel", notifyFrame)
+    iconLabel.Size = UDim2.new(0, 30, 1, 0)
+    iconLabel.Position = UDim2.new(0, 8, 0, 0)
+    iconLabel.BackgroundTransparency = 1
+    iconLabel.Font = Enum.Font.GothamBold
+    iconLabel.TextSize = 16
+    iconLabel.TextColor3 = Color3.fromRGB(0, 255, 150)
+    iconLabel.Text = "🔔"
+
     local notifyText = Instance.new("TextLabel", notifyFrame)
-    notifyText.Size = UDim2.new(1, 0, 1, 0)
+    notifyText.Size = UDim2.new(1, -45, 1, 0)
+    notifyText.Position = UDim2.new(0, 38, 0, 0)
     notifyText.BackgroundTransparency = 1
-    notifyText.Font = Enum.Font.GothamBold
-    notifyText.TextSize = 12
-    notifyText.TextColor3 = Color3.fromRGB(240, 240, 240)
+    notifyText.Font = Enum.Font.GothamMedium
+    notifyText.TextSize = 11
+    notifyText.TextColor3 = Color3.fromRGB(240, 240, 245)
+    notifyText.TextXAlignment = Enum.TextXAlignment.Left
+    notifyText.TextWrapped = true
     notifyText.Text = text
     
     notifyFrame.Parent = NotifyGui
     
     local tweenIn = TweenService:Create(notifyFrame, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
-        Position = UDim2.new(1, -240, 0, 20)
+        Position = UDim2.new(1, -260, 0, 20)
     })
     tweenIn:Play()
     
@@ -74,7 +86,7 @@ local function createNotification(text)
 end
 
 -- ==========================================
--- GIAO DIỆN LOADING SCREEN (ĐANG TẢI SCRIPT 1% -> 100%)
+-- GIAO DIỆN LOADING SCREEN
 -- ==========================================
 local LoadingGui = Instance.new("ScreenGui")
 LoadingGui.Name = "MinhDucHubLoading"
@@ -129,7 +141,7 @@ Instance.new("UICorner", BarFill).CornerRadius = UDim.new(0, 5)
 local PassGui = Instance.new("ScreenGui")
 PassGui.Name = "AdminLoginGUI"
 PassGui.ResetOnSpawn = false
-PassGui.Enabled = false -- Ẩn đi để chờ Loading xong mới hiện
+PassGui.Enabled = false
 PassGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 
 local PassFrame = Instance.new("Frame")
@@ -227,7 +239,7 @@ task.spawn(function()
 end)
 
 -- ==========================================
--- 2. THIẾT KẾ MAIN GUI - TỐI VÀ CÓ HÌNH ẢNH DECAL
+-- 2. THIẾT KẾ MAIN GUI - DARK THEME
 -- ==========================================
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "ModernDashboardHUB"
@@ -236,14 +248,14 @@ ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 ScreenGui.Enabled = false
 ScreenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 
--- NÚT ẨN/HIỆN DÙNG HÌNH ẢNH (ID: 872392514)
+-- NÚT ẨN/HIỆN ĐÃ ĐỔI SANG ID MỚI: 5771949440
 local ToggleButton = Instance.new("ImageButton")
 ToggleButton.Name = "HUBToggle"
 ToggleButton.Size = UDim2.new(0, 50, 0, 50)
 ToggleButton.Position = UDim2.new(0, 15, 0, 15)
 ToggleButton.BackgroundColor3 = Color3.fromRGB(10, 10, 12)
 ToggleButton.BackgroundTransparency = 0.1
-ToggleButton.Image = "rbxassetid://872392514"
+ToggleButton.Image = "rbxassetid://5771949440"
 local UICornerToggle = Instance.new("UICorner", ToggleButton)
 UICornerToggle.CornerRadius = UDim.new(1, 0)
 local ToggleStroke = Instance.new("UIStroke", ToggleButton)
@@ -266,7 +278,6 @@ MainStroke.Thickness = 2
 registerStroke(MainStroke)
 MainFrame.Parent = ScreenGui
 
--- HÌNH ẢNH NỀN GIAO DIỆN CHÍNH (ID: 13314371732)
 local MainBackgroundImage = Instance.new("ImageLabel", MainFrame)
 MainBackgroundImage.Name = "BackgroundImage"
 MainBackgroundImage.Size = UDim2.new(1, 0, 1, 0)
@@ -311,7 +322,7 @@ SubBrand.BackgroundTransparency = 1
 SubBrand.Font = Enum.Font.Gotham
 SubBrand.TextColor3 = Color3.fromRGB(120, 120, 130)
 SubBrand.TextSize = 8
-SubBrand.Text = "v2.6 • Fixed Float"
+SubBrand.Text = "v2.7 • Advanced World"
 SubBrand.ZIndex = 3
 
 -- STATS SERVER (FPS & PLAYER)
@@ -389,6 +400,12 @@ Container2.CanvasSize = UDim2.new(0, 0, 0, 480)
 Container2.ScrollBarThickness = 2
 Container2.Visible = false
 
+-- CONTAINER THÊM MỚI CHO TAB WORLD
+local ContainerWorld = Instance.new("Frame", ContentArea)
+ContainerWorld.Size = UDim2.new(1, 0, 1, 0)
+ContainerWorld.BackgroundTransparency = 1
+ContainerWorld.Visible = false
+
 local UIList1 = Instance.new("UIListLayout", Container1)
 UIList1.Padding = UDim.new(0, 6)
 local UIList2 = Instance.new("UIListLayout", Container2)
@@ -410,22 +427,91 @@ local function createTabBtn(text)
 end
 
 local Tab1Btn = createTabBtn("Movement")
-local Tab2Btn = createTabBtn("Visuals / Teleport")
+local Tab2Btn = createTabBtn("Visuals / TP")
+local TabWorldBtn = createTabBtn("World")
 
 Tab1Btn.BackgroundTransparency = 0.3
 Tab1Btn.TextColor3 = Color3.fromRGB(255, 255, 255)
 
 Tab1Btn.MouseButton1Click:Connect(function()
-    Container1.Visible = true; Container2.Visible = false
+    Container1.Visible = true; Container2.Visible = false; ContainerWorld.Visible = false
     Tab1Btn.BackgroundTransparency = 0.3; Tab1Btn.TextColor3 = Color3.fromRGB(255, 255, 255)
     Tab2Btn.BackgroundTransparency = 1; Tab2Btn.TextColor3 = Color3.fromRGB(150, 150, 160)
+    TabWorldBtn.BackgroundTransparency = 1; TabWorldBtn.TextColor3 = Color3.fromRGB(150, 150, 160)
 end)
 
 Tab2Btn.MouseButton1Click:Connect(function()
-    Container1.Visible = false; Container2.Visible = true
+    Container1.Visible = false; Container2.Visible = true; ContainerWorld.Visible = false
     Tab1Btn.BackgroundTransparency = 1; Tab1Btn.TextColor3 = Color3.fromRGB(150, 150, 160)
     Tab2Btn.BackgroundTransparency = 0.3; Tab2Btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TabWorldBtn.BackgroundTransparency = 1; TabWorldBtn.TextColor3 = Color3.fromRGB(150, 150, 160)
 end)
+
+TabWorldBtn.MouseButton1Click:Connect(function()
+    Container1.Visible = false; Container2.Visible = false; ContainerWorld.Visible = true
+    Tab1Btn.BackgroundTransparency = 1; Tab1Btn.TextColor3 = Color3.fromRGB(150, 150, 160)
+    Tab2Btn.BackgroundTransparency = 1; Tab2Btn.TextColor3 = Color3.fromRGB(150, 150, 160)
+    TabWorldBtn.BackgroundTransparency = 0.3; TabWorldBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    createNotification("Đã mở Tab World - Tính năng sắp ra mắt!")
+end)
+
+-- GIAO DIỆN SANG TRỌNG BÊN TRONG TAB WORLD
+local WorldCard = Instance.new("Frame", ContainerWorld)
+WorldCard.Size = UDim2.new(0.95, 0, 0.85, 0)
+WorldCard.Position = UDim2.new(0.025, 0, 0.075, 0)
+WorldCard.BackgroundColor3 = Color3.fromRGB(14, 14, 20)
+WorldCard.BackgroundTransparency = 0.2
+Instance.new("UICorner", WorldCard).CornerRadius = UDim.new(0, 10)
+
+local WorldStroke = Instance.new("UIStroke", WorldCard)
+WorldStroke.Thickness = 1.5
+registerStroke(WorldStroke)
+
+local WorldIcon = Instance.new("TextLabel", WorldCard)
+WorldIcon.Size = UDim2.new(1, 0, 0, 45)
+WorldIcon.Position = UDim2.new(0, 0, 0, 15)
+WorldIcon.BackgroundTransparency = 1
+WorldIcon.Font = Enum.Font.GothamBold
+WorldIcon.TextSize = 32
+WorldIcon.TextColor3 = Color3.fromRGB(255, 180, 0)
+WorldIcon.Text = "🛠️"
+
+local WorldMainTitle = Instance.new("TextLabel", WorldCard)
+WorldMainTitle.Size = UDim2.new(1, 0, 0, 25)
+WorldMainTitle.Position = UDim2.new(0, 0, 0, 65)
+WorldMainTitle.BackgroundTransparency = 1
+WorldMainTitle.Font = Enum.Font.GothamBold
+WorldMainTitle.TextSize = 13
+WorldMainTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+WorldMainTitle.Text = "CÀI ĐẶT THẾ GIỚI (WORLD)"
+
+local WorldDesc = Instance.new("TextLabel", WorldCard)
+WorldDesc.Size = UDim2.new(0.9, 0, 0, 40)
+WorldDesc.Position = UDim2.new(0.05, 0, 0, 95)
+WorldDesc.BackgroundTransparency = 1
+WorldDesc.Font = Enum.Font.Gotham
+WorldDesc.TextSize = 11
+WorldDesc.TextColor3 = Color3.fromRGB(170, 170, 180)
+WorldDesc.TextWrapped = true
+WorldDesc.Text = "Tính năng can thiệp môi trường (Thời tiết, Ánh sáng, Xóa Sương Mù, Bán kính bản đồ) chưa khả dụng!"
+
+local WorldStatusBadge = Instance.new("Frame", WorldCard)
+WorldStatusBadge.Size = UDim2.new(0, 160, 0, 28)
+WorldStatusBadge.Position = UDim2.new(0.5, -80, 1, -42)
+WorldStatusBadge.BackgroundColor3 = Color3.fromRGB(30, 25, 15)
+Instance.new("UICorner", WorldStatusBadge).CornerRadius = UDim.new(0, 14)
+
+local BadgeStroke = Instance.new("UIStroke", WorldStatusBadge)
+BadgeStroke.Color = Color3.fromRGB(255, 180, 0)
+BadgeStroke.Thickness = 1
+
+local BadgeText = Instance.new("TextLabel", WorldStatusBadge)
+BadgeText.Size = UDim2.new(1, 0, 1, 0)
+BadgeText.BackgroundTransparency = 1
+BadgeText.Font = Enum.Font.GothamBold
+BadgeText.TextSize = 10
+BadgeText.TextColor3 = Color3.fromRGB(255, 200, 50)
+BadgeText.Text = "⏳ ĐANG PHÁT TRIỂN"
 
 local function createFeatureToggle(parent, text, defaultCallback)
     local frame = Instance.new("Frame", parent)
@@ -541,7 +627,7 @@ UserInputService.InputEnded:Connect(function(input)
     end
 end)
 
--- --- [1. CHỈNH TỐC ĐỘ] ---
+-- --- [1. CHỈNH TỐC ĐỘ (SPEED) & LƯU KHI CHẾT] ---
 local SpeedVal = 16
 local speedActive = false
 
@@ -597,6 +683,7 @@ SpeedToggleBtn.MouseButton1Click:Connect(function()
     if speedActive then
         SpeedToggleBtn.BackgroundColor3 = Color3.fromRGB(0, 200, 110)
         SpeedToggleInd:TweenPosition(UDim2.new(1, -19, 0.5, -8), "Out", "Quad", 0.15, true)
+        createNotification("Đã bật Tốc Độ: " .. SpeedVal)
     else
         SpeedToggleBtn.BackgroundColor3 = Color3.fromRGB(35, 35, 40)
         SpeedToggleInd:TweenPosition(UDim2.new(0, 3, 0.5, -8), "Out", "Quad", 0.15, true)
@@ -651,6 +738,7 @@ SavePosBtn.MouseButton1Click:Connect(function()
     if hrp then
         SavedLocation = hrp.CFrame
         SavePosBtn.Text = "ĐÃ LƯU ✓"
+        createNotification("Đã lưu tọa độ hiện tại!")
         task.delay(1, function() SavePosBtn.Text = "LƯU ĐỊA ĐIỂM" end)
     end
 end)
@@ -660,8 +748,10 @@ TeleportBackBtn.MouseButton1Click:Connect(function()
     local hrp = char and char:FindFirstChild("HumanoidRootPart")
     if hrp and SavedLocation then
         hrp.CFrame = SavedLocation
+        createNotification("Đã dịch chuyển về vị trí lưu!")
     elseif not SavedLocation then
         TeleportBackBtn.Text = "CHƯA LƯU!"
+        createNotification("Chưa có vị trí nào được lưu!")
         task.delay(1, function() TeleportBackBtn.Text = "QUAY LẠI" end)
     end
 end)
@@ -680,13 +770,13 @@ FreecamStroke.Thickness = 1.2
 registerStroke(FreecamStroke)
 
 local FreecamLabel = Instance.new("TextLabel", FreecamGroupFrame)
-FreecamLabel.Size = UDim2.new(0.4, 0, 1, 0)
+FreecamLabel.Size = UDim2.new(0, 130, 1, 0)
 FreecamLabel.Position = UDim2.new(0, 10, 0, 0)
 FreecamLabel.BackgroundTransparency = 1
 FreecamLabel.Font = Enum.Font.GothamMedium
 FreecamLabel.TextSize = 11
 FreecamLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-FreecamLabel.Text = "Xuất Hồn (3D Free Move)"
+FreecamLabel.Text = "Xuất Hồn (Freecam)"
 FreecamLabel.TextXAlignment = Enum.TextXAlignment.Left
 
 local FreecamSpeedInput = Instance.new("TextBox", FreecamGroupFrame)
@@ -732,7 +822,7 @@ FreecamToggleBtn.MouseButton1Click:Connect(function()
     triggerOldFreecam(isFreecam)
 end)
 
--- --- [4. BAY FLOAT FLOOR + TỐC ĐỘ BAY (FLOAT SPEED)] ---
+-- --- [4. BAY FLOAT FLOOR + TỐC ĐỘ BAY] ---
 local currentFloatHeight = 0
 local floatMoveSpeed = 0.8
 local isHoldingUp = false
@@ -866,10 +956,9 @@ local EspNpcToggle    = createFeatureToggle(Container2, "Bật Định Vị Sinh
 local EspPlayerToggle = createFeatureToggle(Container2, "Bật Định Vị Người Chơi khác", function(s) playerEspEnabled = s end)
 
 -- ==========================================
--- 4. LOGIC ĐĂNG NHẬP & CHỌN THIẾT BỊ (XỬ LÝ DẤU CÁCH THỪA)
+-- 4. LOGIC ĐĂNG NHẬP & CHỌN THIẾT BỊ
 -- ==========================================
 SubmitBtn.MouseButton1Click:Connect(function()
-    -- Lọc bỏ khoảng trắng thừa ở đầu và cuối chuỗi nhập vào
     local trimmedPass = string.match(PassInput.Text, "^%s*(.-)%s*$")
     
     if trimmedPass == "MINHDUCHUB" then
@@ -887,7 +976,7 @@ local function initDashboard(w, h)
     MainFrame.Position = UDim2.new(0.5, -w/2, 0.5, -h/2)
     ScreenGui.Enabled = true
     MainFrame.Visible = true
-    createNotification("MINHDUC HUB ĐÃ BẬT (v2.6)")
+    createNotification("MINHDUC HUB KHỞI ĐỘNG THÀNH CÔNG (v2.7)")
 end
 
 PcBtn.MouseButton1Click:Connect(function() initDashboard(440, 260) end)
@@ -900,7 +989,7 @@ ToggleButton.MouseButton1Click:Connect(function()
 end)
 
 -- ==========================================
--- 5. XỬ LÝ CORE XUẤT HỒN (FREECAM) VÀ NHẢY BÌNH THƯỜNG
+-- 5. XỬ LÝ CORE FREECAM & GIỮ TỐC ĐỘ NGUYÊN BẢN KHI CHẾT
 -- ==========================================
 local freecamPart = nil
 local freecamCFrame = CFrame.new()
@@ -922,8 +1011,6 @@ function triggerOldFreecam(state)
         end
         freecamPart.CFrame = freecamCFrame
         Workspace.CurrentCamera.CameraSubject = freecamPart
-        
-        -- Cố định HumanoidRootPart tại vị trí cũ để nhân vật đứng yên nhưng vẫn nhảy được
         hrp.Anchored = true
     else
         if hrp then hrp.Anchored = false end
@@ -935,6 +1022,7 @@ function triggerOldFreecam(state)
     end
 end
 
+-- VÒNG LẶP ÁP DỤNG TỐC ĐỘ LIÊN TỤC
 RunService.RenderStepped:Connect(function()
     local char = LocalPlayer.Character
     local hum = char and char:FindFirstChildOfClass("Humanoid")
@@ -993,7 +1081,7 @@ RunService.Stepped:Connect(function()
     end
 end)
 
--- --- KHẮC PHỤC LỖI FLOAT SAU KHI CHẾT/HỒI SINH ---
+-- --- KHẮC PHỤC LỖI FLOAT & GIỮ TỐC ĐỘ KHI CHẾT/HỒI SINH ---
 local floatPart = nil
 RunService.Heartbeat:Connect(function()
     local char = LocalPlayer.Character
@@ -1039,13 +1127,25 @@ local function listenDeath(char)
         end)
     end
 end
+
 if LocalPlayer.Character then listenDeath(LocalPlayer.Character) end
+
+-- TỰ ĐỘNG KHÔI PHỤC TỐC ĐỘ VÀ VỊ TRÍ CHẾT KHI HỒI SINH
 LocalPlayer.CharacterAdded:Connect(function(char)
     listenDeath(char)
+    
+    local hum = char:WaitForChild("Humanoid", 5)
+    if hum and speedActive then
+        hum.WalkSpeed = SpeedVal
+    end
+    
     if respawnEnabled and lastDeathPos then
         task.wait(0.5)
         local hrp = char:WaitForChild("HumanoidRootPart", 5)
-        if hrp then hrp.CFrame = lastDeathPos end
+        if hrp then 
+            hrp.CFrame = lastDeathPos 
+            createNotification("Đã hồi sinh tại điểm chết!")
+        end
     end
 end)
 
@@ -1072,7 +1172,7 @@ RunService.RenderStepped:Connect(function()
 end)
 
 -- ==========================================
--- 6. HỆ THỐNG DRAG VÀ KÉO GIÃN
+-- 6. HỆ THỐNG DRAG VÀ KÉO GIÃN KHUNG (RESIZE)
 -- ==========================================
 local dragging, dragStart, startPos
 local isResizingGlobal = false 
