@@ -1,4 +1,4 @@
--- [[ MINHDUC HUB - FIXED FLOAT ON DEATH & ADDED SPEED SETTING ]] --
+-- [[ MINHDUC HUB - FIXED FLOAT ON DEATH, ADDED SPEED SETTING, LOADING SCREEN & FREECAM JUMP ]] --
 local UserInputService = game:GetService("UserInputService")
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
@@ -74,11 +74,62 @@ local function createNotification(text)
 end
 
 -- ==========================================
+-- GIAO DIỆN LOADING SCREEN (ĐANG TẢI SCRIPT 1% -> 100%)
+-- ==========================================
+local LoadingGui = Instance.new("ScreenGui")
+LoadingGui.Name = "MinhDucHubLoading"
+LoadingGui.ResetOnSpawn = false
+LoadingGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
+
+local LoadingFrame = Instance.new("Frame", LoadingGui)
+LoadingFrame.Size = UDim2.new(0, 300, 0, 140)
+LoadingFrame.Position = UDim2.new(0.5, -150, 0.5, -70)
+LoadingFrame.BackgroundColor3 = Color3.fromRGB(12, 12, 16)
+LoadingFrame.BorderSizePixel = 0
+Instance.new("UICorner", LoadingFrame).CornerRadius = UDim.new(0, 10)
+
+local LoadingStroke = Instance.new("UIStroke", LoadingFrame)
+LoadingStroke.Thickness = 2
+registerStroke(LoadingStroke)
+
+local LoadingTitle = Instance.new("TextLabel", LoadingFrame)
+LoadingTitle.Size = UDim2.new(1, 0, 0, 35)
+LoadingTitle.Position = UDim2.new(0, 0, 0, 10)
+LoadingTitle.BackgroundTransparency = 1
+LoadingTitle.Font = Enum.Font.GothamBold
+LoadingTitle.TextColor3 = Color3.fromRGB(0, 255, 150)
+LoadingTitle.TextSize = 15
+LoadingTitle.Text = "MINHDUC HUB"
+
+local LoadingSub = Instance.new("TextLabel", LoadingFrame)
+LoadingSub.Size = UDim2.new(1, 0, 0, 20)
+LoadingSub.Position = UDim2.new(0, 0, 0, 40)
+LoadingSub.BackgroundTransparency = 1
+LoadingSub.Font = Enum.Font.Gotham
+LoadingSub.TextColor3 = Color3.fromRGB(200, 200, 200)
+LoadingSub.TextSize = 11
+LoadingSub.Text = "Đang tải script 1%..."
+
+local BarBackground = Instance.new("Frame", LoadingFrame)
+BarBackground.Size = UDim2.new(0.85, 0, 0, 10)
+BarBackground.Position = UDim2.new(0.075, 0, 0.7, 0)
+BarBackground.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
+BarBackground.BorderSizePixel = 0
+Instance.new("UICorner", BarBackground).CornerRadius = UDim.new(0, 5)
+
+local BarFill = Instance.new("Frame", BarBackground)
+BarFill.Size = UDim2.new(0, 0, 1, 0)
+BarFill.BackgroundColor3 = Color3.fromRGB(0, 255, 150)
+BarFill.BorderSizePixel = 0
+Instance.new("UICorner", BarFill).CornerRadius = UDim.new(0, 5)
+
+-- ==========================================
 -- 1. PANEL ĐĂNG NHẬP & CHỌN THIẾT BỊ (PASS: MINHDUCHUB)
 -- ==========================================
 local PassGui = Instance.new("ScreenGui")
 PassGui.Name = "AdminLoginGUI"
 PassGui.ResetOnSpawn = false
+PassGui.Enabled = false -- Ẩn đi để chờ Loading xong mới hiện
 PassGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 
 local PassFrame = Instance.new("Frame")
@@ -160,6 +211,20 @@ MobileBtn.Font = Enum.Font.GothamBold
 MobileBtn.TextSize = 12
 MobileBtn.Text = "DI ĐỘNG (MOBILE)"
 Instance.new("UICorner", MobileBtn).CornerRadius = UDim.new(0, 6)
+
+-- THỰC THI TIẾN TRÌNH LOADING
+task.spawn(function()
+    for i = 1, 100 do
+        LoadingSub.Text = "Đang tải script " .. i .. "%..."
+        TweenService:Create(BarFill, TweenInfo.new(0.02, Enum.EasingStyle.Linear), {
+            Size = UDim2.new(i / 100, 0, 1, 0)
+        }):Play()
+        task.wait(0.025)
+    end
+    task.wait(0.2)
+    LoadingGui:Destroy()
+    PassGui.Enabled = true
+end)
 
 -- ==========================================
 -- 2. THIẾT KẾ MAIN GUI - TỐI VÀ CÓ HÌNH ẢNH DECAL
@@ -615,7 +680,7 @@ FreecamStroke.Thickness = 1.2
 registerStroke(FreecamStroke)
 
 local FreecamLabel = Instance.new("TextLabel", FreecamGroupFrame)
-FreecamLabel.Size = UDim2.new(0, 4, 1, 0)
+FreecamLabel.Size = UDim2.new(0.4, 0, 1, 0)
 FreecamLabel.Position = UDim2.new(0, 10, 0, 0)
 FreecamLabel.BackgroundTransparency = 1
 FreecamLabel.Font = Enum.Font.GothamMedium
@@ -669,7 +734,7 @@ end)
 
 -- --- [4. BAY FLOAT FLOOR + TỐC ĐỘ BAY (FLOAT SPEED)] ---
 local currentFloatHeight = 0
-local floatMoveSpeed = 0.8 -- Mặc định tốc độ bay
+local floatMoveSpeed = 0.8
 local isHoldingUp = false
 local isHoldingDown = false
 
@@ -692,7 +757,6 @@ FloatGroupLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 FloatGroupLabel.Text = "Chế Độ Bay (Float)"
 FloatGroupLabel.TextXAlignment = Enum.TextXAlignment.Left
 
--- Ô chỉnh Tốc độ bay (Float Speed) ngay trong giao diện
 local FloatSpeedInput = Instance.new("TextBox", FloatGroupFrame)
 FloatSpeedInput.Size = UDim2.new(0, 50, 0, 22)
 FloatSpeedInput.Position = UDim2.new(0.42, 0, 0.5, -11)
@@ -802,10 +866,13 @@ local EspNpcToggle    = createFeatureToggle(Container2, "Bật Định Vị Sinh
 local EspPlayerToggle = createFeatureToggle(Container2, "Bật Định Vị Người Chơi khác", function(s) playerEspEnabled = s end)
 
 -- ==========================================
--- 4. LOGIC ĐĂNG NHẬP & CHỌN THIẾT BỊ
+-- 4. LOGIC ĐĂNG NHẬP & CHỌN THIẾT BỊ (XỬ LÝ DẤU CÁCH THỪA)
 -- ==========================================
 SubmitBtn.MouseButton1Click:Connect(function()
-    if PassInput.Text == "MINHDUCHUB" then
+    -- Lọc bỏ khoảng trắng thừa ở đầu và cuối chuỗi nhập vào
+    local trimmedPass = string.match(PassInput.Text, "^%s*(.-)%s*$")
+    
+    if trimmedPass == "MINHDUCHUB" then
         PassFrame.Visible = false
         DeviceFrame.Visible = true
     else
@@ -833,11 +900,10 @@ ToggleButton.MouseButton1Click:Connect(function()
 end)
 
 -- ==========================================
--- 5. XỬ LÝ CORE XUẤT HỒN & ENGINE BAY
+-- 5. XỬ LÝ CORE XUẤT HỒN (FREECAM) VÀ NHẢY BÌNH THƯỜNG
 -- ==========================================
 local freecamPart = nil
 local freecamCFrame = CFrame.new()
-local anchoredParts = {}
 
 function triggerOldFreecam(state)
     local char = LocalPlayer.Character
@@ -857,22 +923,10 @@ function triggerOldFreecam(state)
         freecamPart.CFrame = freecamCFrame
         Workspace.CurrentCamera.CameraSubject = freecamPart
         
-        hum.PlatformStand = true
-        
-        table.clear(anchoredParts)
-        for _, p in pairs(char:GetDescendants()) do
-            if p:IsA("BasePart") and not p.Anchored then
-                p.Anchored = true
-                table.insert(anchoredParts, p)
-            end
-        end
+        -- Cố định HumanoidRootPart tại vị trí cũ để nhân vật đứng yên nhưng vẫn nhảy được
+        hrp.Anchored = true
     else
-        for _, p in pairs(anchoredParts) do
-            if p and p.Parent then p.Anchored = false end
-        end
-        table.clear(anchoredParts)
-        
-        if hum then hum.PlatformStand = false end
+        if hrp then hrp.Anchored = false end
         Workspace.CurrentCamera.CameraSubject = char and char:FindFirstChildOfClass("Humanoid")
         if freecamPart then
             freecamPart:Destroy()
@@ -899,8 +953,8 @@ RunService.RenderStepped:Connect(function()
         if UserInputService:IsKeyDown(Enum.KeyCode.S) then moveVector = moveVector - camCFrame.LookVector end
         if UserInputService:IsKeyDown(Enum.KeyCode.D) then moveVector = moveVector + camCFrame.RightVector end
         if UserInputService:IsKeyDown(Enum.KeyCode.A) then moveVector = moveVector - camCFrame.RightVector end
-        if UserInputService:IsKeyDown(Enum.KeyCode.Space) then moveVector = moveVector + Vector3.new(0, 1, 0) end
-        if UserInputService:IsKeyDown(Enum.KeyCode.LeftShift) then moveVector = moveVector - Vector3.new(0, 1, 0) end
+        if UserInputService:IsKeyDown(Enum.KeyCode.E) then moveVector = moveVector + Vector3.new(0, 1, 0) end
+        if UserInputService:IsKeyDown(Enum.KeyCode.Q) then moveVector = moveVector - Vector3.new(0, 1, 0) end
         
         if hum and hum.MoveDirection.Magnitude > 0 and moveVector.Magnitude == 0 then
             local joyDir = hum.MoveDirection
@@ -946,7 +1000,6 @@ RunService.Heartbeat:Connect(function()
     local hrp = char and char:FindFirstChild("HumanoidRootPart")
     local hum = char and char:FindFirstChildOfClass("Humanoid")
 
-    -- Nếu nhân vật chết hoặc mất HumanoidRootPart thì tự động xóa nền tảng cũ để làm mới khi hồi sinh
     if not hrp or (hum and hum.Health <= 0) then
         if floatPart then 
             floatPart:Destroy() 
@@ -963,7 +1016,6 @@ RunService.Heartbeat:Connect(function()
             floatPart.Anchored = true
             floatPart.CanCollide = true
             floatPart.Parent = workspace
-            -- Cập nhật lại độ cao dựa theo vị trí hiện tại sau khi hồi sinh
             currentFloatHeight = hrp.Position.Y - 3.4
         end  
         
