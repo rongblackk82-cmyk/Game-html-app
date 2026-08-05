@@ -1,9 +1,14 @@
--- [[ MINHDUC HUB - FIXED FLOAT ON DEATH, SPEED SAVED ON RESPAWN, LOADING SCREEN, FREECAM & TAB WORLD ]] --
+-- ============================================================
+-- MINHDUC HUB V2.7 X DEX EXPLORER PRO (MERGED ULTIMATE)
+-- Tích hợp Dex Explorer vào Tab World
+-- ============================================================
+
 local UserInputService = game:GetService("UserInputService")
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local Workspace = game:GetService("Workspace")
 local TweenService = game:GetService("TweenService")
+local CoreGui = game:GetService("CoreGui")
 local LocalPlayer = Players.LocalPlayer
 
 -- Bảng quản lý tất cả các UIStroke để đồng bộ màu RGB
@@ -33,7 +38,8 @@ end)
 local NotifyGui = Instance.new("ScreenGui")
 NotifyGui.Name = "HubNotificationSystem"
 NotifyGui.ResetOnSpawn = false
-NotifyGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
+pcall(function() NotifyGui.Parent = CoreGui end)
+if not NotifyGui.Parent then NotifyGui.Parent = LocalPlayer:WaitForChild("PlayerGui") end
 
 local function createNotification(text)
     local notifyFrame = Instance.new("Frame")
@@ -91,7 +97,8 @@ end
 local LoadingGui = Instance.new("ScreenGui")
 LoadingGui.Name = "MinhDucHubLoading"
 LoadingGui.ResetOnSpawn = false
-LoadingGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
+pcall(function() LoadingGui.Parent = CoreGui end)
+if not LoadingGui.Parent then LoadingGui.Parent = LocalPlayer:WaitForChild("PlayerGui") end
 
 local LoadingFrame = Instance.new("Frame", LoadingGui)
 LoadingFrame.Size = UDim2.new(0, 300, 0, 140)
@@ -142,7 +149,8 @@ local PassGui = Instance.new("ScreenGui")
 PassGui.Name = "AdminLoginGUI"
 PassGui.ResetOnSpawn = false
 PassGui.Enabled = false
-PassGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
+pcall(function() PassGui.Parent = CoreGui end)
+if not PassGui.Parent then PassGui.Parent = LocalPlayer:WaitForChild("PlayerGui") end
 
 local PassFrame = Instance.new("Frame")
 PassFrame.Size = UDim2.new(0, 260, 0, 140)
@@ -246,7 +254,18 @@ ScreenGui.Name = "ModernDashboardHUB"
 ScreenGui.ResetOnSpawn = false
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 ScreenGui.Enabled = false
-ScreenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
+pcall(function() ScreenGui.Parent = CoreGui end)
+if not ScreenGui.Parent then ScreenGui.Parent = LocalPlayer:WaitForChild("PlayerGui") end
+
+-- Viền Phát Sáng Highlight cho DEX
+local SelectionHighlight = Instance.new("Highlight")
+SelectionHighlight.Name = "DexSelectionHighlight"
+SelectionHighlight.FillColor = Color3.fromRGB(0, 180, 255)
+SelectionHighlight.FillTransparency = 0.5
+SelectionHighlight.OutlineColor = Color3.fromRGB(0, 255, 170)
+SelectionHighlight.OutlineTransparency = 0
+SelectionHighlight.Enabled = false
+SelectionHighlight.Parent = ScreenGui
 
 -- NÚT ẨN/HIỆN ĐÃ ĐỔI SANG ID MỚI: 5771949440
 local ToggleButton = Instance.new("ImageButton")
@@ -322,7 +341,7 @@ SubBrand.BackgroundTransparency = 1
 SubBrand.Font = Enum.Font.Gotham
 SubBrand.TextColor3 = Color3.fromRGB(120, 120, 130)
 SubBrand.TextSize = 8
-SubBrand.Text = "v2.7 • Advanced World"
+SubBrand.Text = "v2.7 • Advanced"
 SubBrand.ZIndex = 3
 
 -- STATS SERVER (FPS & PLAYER)
@@ -400,7 +419,7 @@ Container2.CanvasSize = UDim2.new(0, 0, 0, 480)
 Container2.ScrollBarThickness = 2
 Container2.Visible = false
 
--- CONTAINER THÊM MỚI CHO TAB WORLD
+-- CONTAINER CỦA DEX EXPLORER (THAY THẾ TAB WORLD CŨ)
 local ContainerWorld = Instance.new("Frame", ContentArea)
 ContainerWorld.Size = UDim2.new(1, 0, 1, 0)
 ContainerWorld.BackgroundTransparency = 1
@@ -411,6 +430,502 @@ UIList1.Padding = UDim.new(0, 6)
 local UIList2 = Instance.new("UIListLayout", Container2)
 UIList2.Padding = UDim.new(0, 6)
 
+-- ==========================================
+-- GIAO DIỆN DEX EXPLORER (TÍCH HỢP VÀO CONTAINER WORLD)
+-- ==========================================
+local DexMain = Instance.new("Frame", ContainerWorld)
+DexMain.Size = UDim2.new(1, 0, 1, 0)
+DexMain.BackgroundTransparency = 1
+
+-- Title Bar DEX
+local DexTitleBar = Instance.new("Frame", DexMain)
+DexTitleBar.Size = UDim2.new(1, 0, 0, 26)
+DexTitleBar.BackgroundColor3 = Color3.fromRGB(18, 20, 26)
+DexTitleBar.BorderSizePixel = 0
+Instance.new("UICorner", DexTitleBar).CornerRadius = UDim.new(0, 8)
+
+local PathText = Instance.new("TextLabel", DexTitleBar)
+PathText.Size = UDim2.new(1, -10, 1, 0)
+PathText.Position = UDim2.new(0, 10, 0, 0)
+PathText.BackgroundTransparency = 1
+PathText.Text = "📁 game"
+PathText.TextColor3 = Color3.fromRGB(240, 245, 255)
+PathText.Font = Enum.Font.GothamBold
+PathText.TextSize = 11
+PathText.TextXAlignment = Enum.TextXAlignment.Left
+
+-- Back Button & Search Box
+local BackBtn = Instance.new("TextButton", DexMain)
+BackBtn.Size = UDim2.new(0, 65, 0, 26)
+BackBtn.Position = UDim2.new(0, 0, 0, 32)
+BackBtn.BackgroundColor3 = Color3.fromRGB(24, 27, 36)
+BackBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+BackBtn.Text = "⬅ Trở về"
+BackBtn.Font = Enum.Font.GothamBold
+BackBtn.TextSize = 10
+Instance.new("UICorner", BackBtn).CornerRadius = UDim.new(0, 6)
+
+local SearchBox = Instance.new("TextBox", DexMain)
+SearchBox.Size = UDim2.new(1, -70, 0, 26)
+SearchBox.Position = UDim2.new(0, 70, 0, 32)
+SearchBox.BackgroundColor3 = Color3.fromRGB(18, 20, 26)
+SearchBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+SearchBox.Text = ""
+SearchBox.PlaceholderText = "🔍 Nhập tên tìm kiếm..."
+SearchBox.PlaceholderColor3 = Color3.fromRGB(120, 125, 140)
+SearchBox.Font = Enum.Font.Gotham
+SearchBox.TextSize = 11
+SearchBox.ClearTextOnFocus = false
+Instance.new("UICorner", SearchBox).CornerRadius = UDim.new(0, 6)
+
+-- Scroll List Frame DEX
+local ScrollList = Instance.new("ScrollingFrame", DexMain)
+ScrollList.Size = UDim2.new(1, 0, 1, -95)
+ScrollList.Position = UDim2.new(0, 0, 0, 64)
+ScrollList.BackgroundColor3 = Color3.fromRGB(9, 10, 13)
+ScrollList.BackgroundTransparency = 0.5
+ScrollList.BorderSizePixel = 0
+ScrollList.CanvasSize = UDim2.new(0, 0, 0, 0)
+ScrollList.ScrollBarThickness = 3
+ScrollList.ScrollBarImageColor3 = Color3.fromRGB(0, 240, 160)
+ScrollList.AutomaticCanvasSize = Enum.AutomaticSize.None
+Instance.new("UICorner", ScrollList).CornerRadius = UDim.new(0, 8)
+
+local UIListDex = Instance.new("UIListLayout", ScrollList)
+UIListDex.SortOrder = Enum.SortOrder.LayoutOrder
+UIListDex.Padding = UDim.new(0, 3)
+
+UIListDex:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+    ScrollList.CanvasSize = UDim2.new(0, 0, 0, UIListDex.AbsoluteContentSize.Y + 10)
+end)
+
+-- Action Frame Buttons DEX
+local ActionFrame = Instance.new("Frame", DexMain)
+ActionFrame.Size = UDim2.new(1, 0, 0, 26)
+ActionFrame.Position = UDim2.new(0, 0, 1, -26)
+ActionFrame.BackgroundTransparency = 1
+
+local UIListAction = Instance.new("UIListLayout", ActionFrame)
+UIListAction.FillDirection = Enum.FillDirection.Horizontal
+UIListAction.Padding = UDim.new(0, 4)
+
+local function createActionButton(text, color)
+    local btn = Instance.new("TextButton", ActionFrame)
+    btn.Size = UDim2.new(0.23, 0, 1, 0) -- Sử dụng scale để responsive trên mobile
+    btn.BackgroundColor3 = color or Color3.fromRGB(24, 27, 36)
+    btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    btn.Text = text
+    btn.Font = Enum.Font.GothamBold
+    btn.TextSize = 10
+    btn.Visible = false
+    Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 6)
+    return btn
+end
+
+local BtnCopyName = createActionButton("⭐ Copy", Color3.fromRGB(190, 130, 0))
+local BtnDelete = createActionButton("Xóa", Color3.fromRGB(170, 45, 45))
+local BtnTP = createActionButton("T.Port", Color3.fromRGB(0, 130, 210))
+local BtnView = createActionButton("Xem Cam", Color3.fromRGB(0, 160, 100))
+BtnCopyName.Size = UDim2.new(0.25, 0, 1, 0)
+BtnDelete.Size = UDim2.new(0.22, 0, 1, 0)
+BtnTP.Size = UDim2.new(0.24, 0, 1, 0)
+BtnView.Size = UDim2.new(0.25, 0, 1, 0)
+
+-- Dex Loading Screen Overlay
+local DexLoadingFrame = Instance.new("Frame", ContainerWorld)
+DexLoadingFrame.Size = UDim2.new(1, 0, 1, 0)
+DexLoadingFrame.BackgroundColor3 = Color3.fromRGB(10, 11, 15)
+DexLoadingFrame.BackgroundTransparency = 0.2
+DexLoadingFrame.ZIndex = 10
+DexLoadingFrame.Visible = false
+Instance.new("UICorner", DexLoadingFrame).CornerRadius = UDim.new(0, 12)
+
+local DexLoadingText = Instance.new("TextLabel", DexLoadingFrame)
+DexLoadingText.Size = UDim2.new(1, 0, 0, 30)
+DexLoadingText.Position = UDim2.new(0, 0, 0.4, 0)
+DexLoadingText.BackgroundTransparency = 1
+DexLoadingText.Text = "Đang tải cấu trúc..."
+DexLoadingText.TextColor3 = Color3.fromRGB(240, 245, 255)
+DexLoadingText.Font = Enum.Font.GothamBold
+DexLoadingText.TextSize = 13
+DexLoadingText.ZIndex = 11
+
+local DexLoadingBarBg = Instance.new("Frame", DexLoadingFrame)
+DexLoadingBarBg.Size = UDim2.new(0.6, 0, 0, 6)
+DexLoadingBarBg.Position = UDim2.new(0.2, 0, 0.55, 0)
+DexLoadingBarBg.BackgroundColor3 = Color3.fromRGB(25, 28, 38)
+DexLoadingBarBg.BorderSizePixel = 0
+DexLoadingBarBg.ZIndex = 11
+Instance.new("UICorner", DexLoadingBarBg).CornerRadius = UDim.new(1, 0)
+
+local DexLoadingBarFill = Instance.new("Frame", DexLoadingBarBg)
+DexLoadingBarFill.Size = UDim2.new(0, 0, 1, 0)
+DexLoadingBarFill.BackgroundColor3 = Color3.fromRGB(0, 240, 160)
+DexLoadingBarFill.BorderSizePixel = 0
+DexLoadingBarFill.ZIndex = 12
+Instance.new("UICorner", DexLoadingBarFill).CornerRadius = UDim.new(1, 0)
+
+local function PlayDexLoadingAnimation(text, callback)
+    DexLoadingText.Text = text or "Đang tải dữ liệu..."
+    DexLoadingFrame.Visible = true
+    DexLoadingBarFill.Size = UDim2.new(0, 0, 1, 0)
+    
+    local tween = TweenService:Create(DexLoadingBarFill, TweenInfo.new(0.18, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = UDim2.new(1, 0, 1, 0)})
+    tween:Play()
+    tween.Completed:Connect(function()
+        DexLoadingFrame.Visible = false
+        if callback then callback() end
+    end)
+end
+
+-- ==========================================
+-- DEX EXPLORER LOGIC
+-- ==========================================
+local CurrentFolder = game
+local SelectedObject = nil
+local SelectedBtn = nil
+local IsViewingCam = false
+local ChildAddedConn = nil
+local ChildRemovedConn = nil
+
+local CamConn = nil
+local TouchConnStart, TouchConnMove, TouchConnEnd = nil, nil, nil
+local MouseConnWheel = nil
+local CamAngleX, CamAngleY = 0, 0
+local CamDistance = 12
+
+local function GetObjectCFrame(obj)
+    if not obj then return nil end
+    if obj:IsA("BasePart") then return obj.CFrame end
+    if obj:IsA("Model") then
+        if obj.PrimaryPart then return obj.PrimaryPart.CFrame end
+        local p = obj:FindFirstChildOfClass("BasePart") or obj:FindFirstChildWhichIsA("BasePart", true)
+        if p then return p.CFrame end
+    end
+    if obj:IsA("Tool") or obj:IsA("Accoutrement") then
+        local handle = obj:FindFirstChild("Handle")
+        if handle and handle:IsA("BasePart") then return handle.CFrame end
+        local p = obj:FindFirstChildOfClass("BasePart") or obj:FindFirstChildWhichIsA("BasePart", true)
+        if p then return p.CFrame end
+    end
+    local descendantPart = obj:FindFirstChildWhichIsA("BasePart", true)
+    if descendantPart then return descendantPart.CFrame end
+    return nil
+end
+
+local function HighlightObject(obj)
+    if obj and (obj:IsA("BasePart") or obj:IsA("Model") or obj:IsA("Tool")) then
+        SelectionHighlight.Adornee = obj
+        SelectionHighlight.Enabled = true
+    else
+        SelectionHighlight.Adornee = nil
+        SelectionHighlight.Enabled = false
+    end
+end
+
+local function UpdateActionButtons(obj)
+    BtnCopyName.Visible = false
+    BtnDelete.Visible = false
+    BtnTP.Visible = false
+    BtnView.Visible = false
+
+    if not obj then 
+        HighlightObject(nil)
+        return 
+    end
+
+    HighlightObject(obj)
+
+    local isService = obj:IsA("DataModel") or obj:IsA("Workspace") or obj == game:GetService("Players") or obj == game:GetService("Lighting") or obj == game:GetService("ReplicatedStorage")
+    
+    BtnCopyName.Visible = true
+    BtnDelete.Visible = not isService
+
+    if not isService then
+        local cf = GetObjectCFrame(obj)
+        if cf then
+            BtnTP.Visible = true
+            BtnView.Visible = true
+        end
+    end
+end
+
+local function CreateItemRow(child)
+    if child.Name == "DexMobileProUltimateVip" or child.Name == "ModernDashboardHUB" or child == SelectionHighlight then return nil end
+
+    local row = Instance.new("Frame")
+    row.Name = child:GetDebugId()
+    row.Size = UDim2.new(1, 0, 0, 28)
+    row.BackgroundColor3 = (SelectedObject == child) and Color3.fromRGB(0, 110, 210) or Color3.fromRGB(16, 18, 24)
+    row.BorderSizePixel = 0
+    row.LayoutOrder = 100 -- GIỮ NGUYÊN ĐỂ ITEM MỚI NẰM CUỐI
+    row.Parent = ScrollList
+    Instance.new("UICorner", row).CornerRadius = UDim.new(0, 6)
+
+    local selectBtn = Instance.new("TextButton", row)
+    selectBtn.Name = "SelectBtn"
+    selectBtn.Size = UDim2.new(0.75, 0, 1, 0)
+    selectBtn.BackgroundTransparency = 1
+    selectBtn.TextColor3 = Color3.fromRGB(225, 230, 240)
+    selectBtn.TextXAlignment = Enum.TextXAlignment.Left
+    selectBtn.Font = Enum.Font.GothamMedium
+    selectBtn.TextSize = 11
+
+    local hasChildren = #child:GetChildren() > 0
+    local prefix = hasChildren and "📂 " or "📄 "
+    selectBtn.Text = "  " .. prefix .. child.Name .. " [" .. child.ClassName .. "]"
+    selectBtn.TextTruncate = Enum.TextTruncate.AtEnd
+
+    selectBtn.MouseButton1Click:Connect(function()
+        if SelectedBtn then SelectedBtn.BackgroundColor3 = Color3.fromRGB(16, 18, 24) end
+        SelectedObject = child
+        SelectedBtn = row
+        row.BackgroundColor3 = Color3.fromRGB(0, 110, 210)
+        UpdateActionButtons(child)
+    end)
+
+    if hasChildren then
+        local openBtn = Instance.new("TextButton", row)
+        openBtn.Name = "OpenBtn"
+        openBtn.Size = UDim2.new(0, 45, 0.75, 0)
+        openBtn.Position = UDim2.new(1, -50, 0.125, 0)
+        openBtn.BackgroundColor3 = Color3.fromRGB(0, 160, 115)
+        openBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+        openBtn.Text = "Vào ➔"
+        openBtn.Font = Enum.Font.GothamBold
+        openBtn.TextSize = 9
+        Instance.new("UICorner", openBtn).CornerRadius = UDim.new(0, 5)
+
+        openBtn.MouseButton1Click:Connect(function()
+            PlayDexLoadingAnimation("Đang tải thư mục...", function()
+                RenderFolder(child)
+            end)
+        end)
+    end
+
+    return row
+end
+
+function RenderFolder(targetParent)
+    CurrentFolder = targetParent
+    PathText.Text = "📁 " .. targetParent:GetFullName()
+
+    if ChildAddedConn then ChildAddedConn:Disconnect() end
+    if ChildRemovedConn then ChildRemovedConn:Disconnect() end
+
+    for _, item in ipairs(ScrollList:GetChildren()) do
+        if item:IsA("Frame") or item:IsA("TextButton") then item:Destroy() end
+    end
+
+    local children = targetParent:GetChildren()
+    for _, child in ipairs(children) do
+        CreateItemRow(child)
+    end
+
+    UpdateActionButtons(SelectedObject)
+
+    ChildAddedConn = targetParent.ChildAdded:Connect(function(child)
+        if SearchBox.Text == "" and MainFrame.Visible and ContainerWorld.Visible then
+            CreateItemRow(child)
+        end
+    end)
+
+    ChildRemovedConn = targetParent.ChildRemoved:Connect(function(child)
+        if MainFrame.Visible and ContainerWorld.Visible then
+            local row = ScrollList:FindFirstChild(child:GetDebugId())
+            if row then
+                if SelectedObject == child then
+                    SelectedObject = nil
+                    UpdateActionButtons(nil)
+                end
+                row:Destroy()
+            end
+        end
+    end)
+end
+
+SearchBox.FocusLost:Connect(function(enterPressed)
+    if SearchBox.Text == "" then
+        RenderFolder(CurrentFolder)
+        return
+    end
+    
+    if ChildAddedConn then ChildAddedConn:Disconnect() end
+    if ChildRemovedConn then ChildRemovedConn:Disconnect() end
+
+    local query = SearchBox.Text:lower()
+    for _, item in ipairs(ScrollList:GetChildren()) do
+        if item:IsA("Frame") or item:IsA("TextButton") then item:Destroy() end
+    end
+
+    PathText.Text = "🔍 KQ: " .. query
+    for _, obj in ipairs(game:GetDescendants()) do
+        if obj.Name:lower():find(query, 1, true) then
+            local row = Instance.new("Frame", ScrollList)
+            row.Size = UDim2.new(1, 0, 0, 28)
+            row.BackgroundColor3 = Color3.fromRGB(16, 18, 24)
+            row.BorderSizePixel = 0
+            Instance.new("UICorner", row).CornerRadius = UDim.new(0, 6)
+
+            local btn = Instance.new("TextButton", row)
+            btn.Size = UDim2.new(1, 0, 1, 0)
+            btn.BackgroundTransparency = 1
+            btn.TextColor3 = Color3.fromRGB(225, 230, 240)
+            btn.Text = "  📄 " .. obj:GetFullName() .. " [" .. obj.ClassName .. "]"
+            btn.TextXAlignment = Enum.TextXAlignment.Left
+            btn.Font = Enum.Font.GothamMedium
+            btn.TextSize = 10
+            btn.TextTruncate = Enum.TextTruncate.AtEnd
+
+            btn.MouseButton1Click:Connect(function()
+                if SelectedBtn then SelectedBtn.BackgroundColor3 = Color3.fromRGB(16, 18, 24) end
+                SelectedObject = obj
+                SelectedBtn = row
+                row.BackgroundColor3 = Color3.fromRGB(0, 110, 210)
+                UpdateActionButtons(obj)
+            end)
+        end
+    end
+end)
+
+BackBtn.MouseButton1Click:Connect(function()
+    if CurrentFolder ~= game and CurrentFolder.Parent then
+        PlayDexLoadingAnimation("Đang trở về...", function()
+            RenderFolder(CurrentFolder.Parent)
+        end)
+    end
+end)
+
+BtnCopyName.MouseButton1Click:Connect(function()
+    if SelectedObject and setclipboard then
+        setclipboard(SelectedObject.Name)
+        BtnCopyName.Text = "✓ Đã Chép!"
+        task.wait(0.8)
+        BtnCopyName.Text = "⭐ Copy"
+    end
+end)
+
+BtnDelete.MouseButton1Click:Connect(function()
+    if SelectedObject then
+        pcall(function() SelectedObject:Destroy() end)
+        SelectedObject = nil
+        HighlightObject(nil)
+    end
+end)
+
+BtnTP.MouseButton1Click:Connect(function()
+    if SelectedObject and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+        local hrp = LocalPlayer.Character.HumanoidRootPart
+        local cf = GetObjectCFrame(SelectedObject)
+        if cf then
+            hrp.CFrame = cf + Vector3.new(0, 3, 0)
+        end
+    end
+end)
+
+local function StopCameraView()
+    if CamConn then CamConn:Disconnect() CamConn = nil end
+    if TouchConnStart then TouchConnStart:Disconnect() TouchConnStart = nil end
+    if TouchConnMove then TouchConnMove:Disconnect() TouchConnMove = nil end
+    if TouchConnEnd then TouchConnEnd:Disconnect() TouchConnEnd = nil end
+    if MouseConnWheel then MouseConnWheel:Disconnect() MouseConnWheel = nil end
+
+    local cam = Workspace.CurrentCamera
+    cam.CameraType = Enum.CameraType.Custom
+    local char = LocalPlayer.Character
+    local hum = char and char:FindFirstChildOfClass("Humanoid")
+    if hum then cam.CameraSubject = hum end
+
+    IsViewingCam = false
+    BtnView.Text = "Xem Cam"
+    BtnView.BackgroundColor3 = Color3.fromRGB(0, 160, 100)
+end
+
+BtnView.MouseButton1Click:Connect(function()
+    if IsViewingCam then
+        StopCameraView()
+        return
+    end
+
+    local cf = GetObjectCFrame(SelectedObject)
+    if not cf then return end
+
+    IsViewingCam = true
+    BtnView.Text = "❌ Tắt Cam"
+    BtnView.BackgroundColor3 = Color3.fromRGB(180, 45, 45)
+
+    local cam = Workspace.CurrentCamera
+    cam.CameraType = Enum.CameraType.Scriptable
+
+    CamAngleX = 0
+    CamAngleY = math.rad(-15)
+    CamDistance = 12
+
+    CamConn = RunService.RenderStepped:Connect(function()
+        local targetCF = GetObjectCFrame(SelectedObject)
+        if not targetCF then
+            StopCameraView()
+            return
+        end
+        
+        local rotCF = CFrame.Angles(0, CamAngleX, 0) * CFrame.Angles(CamAngleY, 0, 0)
+        local camPos = targetCF.Position + (rotCF * Vector3.new(0, 0, CamDistance))
+        cam.CFrame = CFrame.new(camPos, targetCF.Position)
+    end)
+
+    local activeTouches = {}
+    local initialPinchDist = nil
+    local initialCamDist = nil
+
+    TouchConnStart = UserInputService.TouchStarted:Connect(function(touch, gameProcessed)
+        if gameProcessed then return end
+        activeTouches[touch] = touch.Position
+    end)
+
+    TouchConnMove = UserInputService.TouchMoved:Connect(function(touch, gameProcessed)
+        if gameProcessed then return end
+        local touchList = {}
+        for t, pos in pairs(activeTouches) do
+            if t == touch then activeTouches[t] = touch.Position end
+            table.insert(touchList, activeTouches[t])
+        end
+
+        if #touchList == 1 then
+            local delta = touch.Delta
+            CamAngleX = CamAngleX - (delta.X * 0.006)
+            CamAngleY = math.clamp(CamAngleY - (delta.Y * 0.006), math.rad(-80), math.rad(80))
+            initialPinchDist = nil
+        elseif #touchList >= 2 then
+            local p1, p2 = touchList[1], touchList[2]
+            local currentDist = (p1 - p2).Magnitude
+            if not initialPinchDist then
+                initialPinchDist = currentDist
+                initialCamDist = CamDistance
+            else
+                local scale = initialPinchDist / math.max(currentDist, 1)
+                CamDistance = math.clamp(initialCamDist * scale, 2, 200)
+            end
+        end
+    end)
+
+    TouchConnEnd = UserInputService.TouchEnded:Connect(function(touch)
+        activeTouches[touch] = nil
+        if table.clone(activeTouches) and #activeTouches < 2 then
+            initialPinchDist = nil
+        end
+    end)
+
+    MouseConnWheel = UserInputService.InputChanged:Connect(function(input, gameProcessed)
+        if gameProcessed then return end
+        if input.UserInputType == Enum.UserInputType.MouseWheel then
+            CamDistance = math.clamp(CamDistance - (input.Position.Z * 3), 2, 200)
+        end
+    end)
+end)
+
+-- ==========================================
+-- ĐIỀU HƯỚNG TABS
+-- ==========================================
 local function createTabBtn(text)
     local btn = Instance.new("TextButton", TabContainer)
     btn.Size = UDim2.new(1, 0, 0, 30)
@@ -428,7 +943,7 @@ end
 
 local Tab1Btn = createTabBtn("Movement")
 local Tab2Btn = createTabBtn("Visuals / TP")
-local TabWorldBtn = createTabBtn("World")
+local TabWorldBtn = createTabBtn("World (DEX)")
 
 Tab1Btn.BackgroundTransparency = 0.3
 Tab1Btn.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -447,71 +962,20 @@ Tab2Btn.MouseButton1Click:Connect(function()
     TabWorldBtn.BackgroundTransparency = 1; TabWorldBtn.TextColor3 = Color3.fromRGB(150, 150, 160)
 end)
 
+local IsDexLoadedFirstTime = false
 TabWorldBtn.MouseButton1Click:Connect(function()
     Container1.Visible = false; Container2.Visible = false; ContainerWorld.Visible = true
     Tab1Btn.BackgroundTransparency = 1; Tab1Btn.TextColor3 = Color3.fromRGB(150, 150, 160)
     Tab2Btn.BackgroundTransparency = 1; Tab2Btn.TextColor3 = Color3.fromRGB(150, 150, 160)
     TabWorldBtn.BackgroundTransparency = 0.3; TabWorldBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-    createNotification("Đã mở Tab World - Tính năng sắp ra mắt!")
+    
+    if not IsDexLoadedFirstTime then
+        IsDexLoadedFirstTime = true
+        PlayDexLoadingAnimation("Khởi tạo DEX Explorer...", function()
+            RenderFolder(game)
+        end)
+    end
 end)
-
--- GIAO DIỆN SANG TRỌNG BÊN TRONG TAB WORLD
-local WorldCard = Instance.new("Frame", ContainerWorld)
-WorldCard.Size = UDim2.new(0.95, 0, 0.85, 0)
-WorldCard.Position = UDim2.new(0.025, 0, 0.075, 0)
-WorldCard.BackgroundColor3 = Color3.fromRGB(14, 14, 20)
-WorldCard.BackgroundTransparency = 0.2
-Instance.new("UICorner", WorldCard).CornerRadius = UDim.new(0, 10)
-
-local WorldStroke = Instance.new("UIStroke", WorldCard)
-WorldStroke.Thickness = 1.5
-registerStroke(WorldStroke)
-
-local WorldIcon = Instance.new("TextLabel", WorldCard)
-WorldIcon.Size = UDim2.new(1, 0, 0, 45)
-WorldIcon.Position = UDim2.new(0, 0, 0, 15)
-WorldIcon.BackgroundTransparency = 1
-WorldIcon.Font = Enum.Font.GothamBold
-WorldIcon.TextSize = 32
-WorldIcon.TextColor3 = Color3.fromRGB(255, 180, 0)
-WorldIcon.Text = "🛠️"
-
-local WorldMainTitle = Instance.new("TextLabel", WorldCard)
-WorldMainTitle.Size = UDim2.new(1, 0, 0, 25)
-WorldMainTitle.Position = UDim2.new(0, 0, 0, 65)
-WorldMainTitle.BackgroundTransparency = 1
-WorldMainTitle.Font = Enum.Font.GothamBold
-WorldMainTitle.TextSize = 13
-WorldMainTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-WorldMainTitle.Text = "CÀI ĐẶT THẾ GIỚI (WORLD)"
-
-local WorldDesc = Instance.new("TextLabel", WorldCard)
-WorldDesc.Size = UDim2.new(0.9, 0, 0, 40)
-WorldDesc.Position = UDim2.new(0.05, 0, 0, 95)
-WorldDesc.BackgroundTransparency = 1
-WorldDesc.Font = Enum.Font.Gotham
-WorldDesc.TextSize = 11
-WorldDesc.TextColor3 = Color3.fromRGB(170, 170, 180)
-WorldDesc.TextWrapped = true
-WorldDesc.Text = "Tính năng can thiệp môi trường (Thời tiết, Ánh sáng, Xóa Sương Mù, Bán kính bản đồ) chưa khả dụng!"
-
-local WorldStatusBadge = Instance.new("Frame", WorldCard)
-WorldStatusBadge.Size = UDim2.new(0, 160, 0, 28)
-WorldStatusBadge.Position = UDim2.new(0.5, -80, 1, -42)
-WorldStatusBadge.BackgroundColor3 = Color3.fromRGB(30, 25, 15)
-Instance.new("UICorner", WorldStatusBadge).CornerRadius = UDim.new(0, 14)
-
-local BadgeStroke = Instance.new("UIStroke", WorldStatusBadge)
-BadgeStroke.Color = Color3.fromRGB(255, 180, 0)
-BadgeStroke.Thickness = 1
-
-local BadgeText = Instance.new("TextLabel", WorldStatusBadge)
-BadgeText.Size = UDim2.new(1, 0, 1, 0)
-BadgeText.BackgroundTransparency = 1
-BadgeText.Font = Enum.Font.GothamBold
-BadgeText.TextSize = 10
-BadgeText.TextColor3 = Color3.fromRGB(255, 200, 50)
-BadgeText.Text = "⏳ ĐANG PHÁT TRIỂN"
 
 local function createFeatureToggle(parent, text, defaultCallback)
     local frame = Instance.new("Frame", parent)
@@ -569,7 +1033,8 @@ local FloatExternalGui = Instance.new("ScreenGui")
 FloatExternalGui.Name = "FloatControllerExternal"
 FloatExternalGui.ResetOnSpawn = false
 FloatExternalGui.Enabled = false
-FloatExternalGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
+pcall(function() FloatExternalGui.Parent = CoreGui end)
+if not FloatExternalGui.Parent then FloatExternalGui.Parent = LocalPlayer:WaitForChild("PlayerGui") end
 
 local ExtFrame = Instance.new("Frame", FloatExternalGui)
 ExtFrame.Size = UDim2.new(0, 45, 0, 90)
